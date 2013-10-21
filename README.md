@@ -1,4 +1,4 @@
-report-maker
-============
+prosemaker
+==========
 
 Document assembly for scientific reporting
