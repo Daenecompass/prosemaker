@@ -49,10 +49,10 @@ end
 def resolve(str, data)
 
   puts 'resolving conditon: ' + str
-  puts 'using data: ' + data.to_s
+  puts 'using data: ' + data.to_str
 
   pl = ProseConditionParser.new
-  pp = Parslet::Transform.new do
+  pp = Parslet::Transform.new(data) do
 
     # replace
     rule(:number => simple(:numstr))  { Float(numstr) }
