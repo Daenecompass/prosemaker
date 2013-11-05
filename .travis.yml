@@ -5,6 +5,8 @@ python:
   - "3.2"
   - "3.3"
 # command to install dependencies
-install: "python setup.py develop"
+install: 
+    - cd egg/dwb.prosemaker
+    - python setup.py develop
 # command to run tests
 script: python setup.py test -q
