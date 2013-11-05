@@ -22,7 +22,10 @@ setup(
     long_description=long_description,
     # Get more strings from
     # http://pypi.python.org/pypi?%3Aaction=list_classifiers
-    classifiers=["Programming Language :: Python"],
+    classifiers=[
+        "Programming Language :: Python",
+        "Intended Audience :: Science/Research"
+    ],
     keywords='',
     author='Daniel Baird',
     author_email='daniel@danielbaird.com',
