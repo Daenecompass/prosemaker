@@ -1,8 +1,8 @@
 import unittest
 
-from dwb.prosemaker.tests.test_nested_example import NestedExampleTests
+from dwb.prosemaker.tests.test_prosemaker import TestProseMaker
 
-class ExampleTests(unittest.TestCase):
+class TestExample(unittest.TestCase):
 
     def setUp(self):
         pass

@@ -1,1 +1,1 @@
-# This package may contain traces of nuts
+from dwb.prosemaker.prosemaker import ProseMaker
