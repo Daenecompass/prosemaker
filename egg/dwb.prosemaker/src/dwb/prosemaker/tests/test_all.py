@@ -1,5 +1,7 @@
 import unittest
 
+from dwb.prosemaker.tests.test_nested_example import NestedExampleTests
+
 class ExampleTests(unittest.TestCase):
 
     def setUp(self):
