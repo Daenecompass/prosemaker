@@ -43,5 +43,7 @@ setup(
     test_suite = "dwb.prosemaker.tests.test_all",
     entry_points="""
     # -*- Entry points: -*-
+    [console_scripts]
+    aprint = dwb.prosemaker.scripts.a:main
     """,
 )
