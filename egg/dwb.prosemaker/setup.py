@@ -36,6 +36,10 @@ setup(
     namespace_packages=['dwb'],
     include_package_data=True,
     zip_safe=True,
+    setup_requires=[
+        "nose>=1.0",
+        "coverage>=1.0",
+    ],
     install_requires=[
         'setuptools',
         # -*- Extra requirements: -*-
