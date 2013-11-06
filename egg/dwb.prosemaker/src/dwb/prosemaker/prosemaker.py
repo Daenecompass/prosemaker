@@ -34,3 +34,9 @@ class ProseMaker:
     @source.deleter
     def source(self):
         del self._source
+
+    ## doc
+    @property
+    def doc(self):
+        """ The 'doc' property """
+        raise NotImplementedError("TODO - doc is not yet implemented")
