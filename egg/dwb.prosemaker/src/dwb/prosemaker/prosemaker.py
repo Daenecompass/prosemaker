@@ -1,4 +1,3 @@
-# This package may contain traces of nuts
 class ProseMaker:
 
     def __init__(self):

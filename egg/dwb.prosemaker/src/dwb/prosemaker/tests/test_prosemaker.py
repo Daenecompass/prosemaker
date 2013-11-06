@@ -5,7 +5,6 @@ class TestProseMaker(unittest.TestCase):
 
     def setUp(self):
         self.prosemaker = ProseMaker()
-        pass
 
     def tearDown(self):
         pass
