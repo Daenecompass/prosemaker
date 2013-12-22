@@ -36,6 +36,10 @@ setup(
     namespace_packages=['dwb'],
     include_package_data=True,
     zip_safe=True,
+    setup_requires=[
+        "nose>=1.0",
+        "coverage>=1.0",
+    ],
     install_requires=[
         'setuptools',
         # -*- Extra requirements: -*-
@@ -43,5 +47,7 @@ setup(
     test_suite = "dwb.prosemaker.tests.test_all",
     entry_points="""
     # -*- Entry points: -*-
+    [console_scripts]
+    aprint = dwb.prosemaker.scripts.a:main
     """,
 )

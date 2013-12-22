@@ -1,4 +1,3 @@
-# This package may contain traces of nuts
 class ProseMaker:
 
     def __init__(self):
@@ -34,3 +33,9 @@ class ProseMaker:
     @source.deleter
     def source(self):
         del self._source
+
+    ## doc
+    @property
+    def doc(self):
+        """ The 'doc' property """
+        raise NotImplementedError("TODO - doc is not yet implemented")
