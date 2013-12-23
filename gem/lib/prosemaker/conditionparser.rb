@@ -2,6 +2,7 @@
 require 'parslet'
 
 # --------------------------------------------------------------
+# this is the class the turns the conditon string into a tree.
 class ProseConditionParser < Parslet::Parser
 
   # first define whitespace and other bits
@@ -28,15 +29,30 @@ class ProseConditionParser < Parslet::Parser
   root(:condition)
 end
 # --------------------------------------------------------------
+# This is the class the takes the syntax tree and transforms bits
+# of it.  In theory the transforms continue, making the tree
+# smaller each time, until there is just a single boolean left,
+# which is the 'answer' of the condition.
 class ProseConditionResolver < Parslet::Transform
 
   def initialize(data=nil)
     super()
-    @data = data
-    puts @data
+    @@data = data
   end
 
-#  rule(:name   => simple(:varname)) { varname }
+  rule(:number => simple(:numstr))  { Float(numstr) }
+
+  # alternate block construction with a passed-in hash " |d| ".  This
+  # trick is required for this rule because the replacement block needs
+  # to get access to the @@data variable, and if we used the normal
+  # block construction, where the 'matched' nodes are available
+  # as vars directly, local vars like @@data are hidden.
+  rule(:name => simple(:varname))   { |d|
+    @@data[d[:varname].to_s]
+  }
+  rule(:left => simple(:l), :cmp => '<', :right => simple(:r)) { l < r }
+  rule(:left => simple(:l), :cmp => '>', :right => simple(:r)) { l > r }
+#  rule(:left => simple(:l), :cmp => '=', :right => simple(:r)) { l == r }
 end
 # --------------------------------------------------------------
 def parse(str)
@@ -48,24 +64,14 @@ end
 # --------------------------------------------------------------
 def resolve(str, data)
 
-  puts 'resolving conditon: ' + str
-  puts 'using data: ' + data.to_s
-
   pl = ProseConditionParser.new
-  pp = Parslet::Transform.new do
+  pp = ProseConditionResolver.new data
 
-    # replace
-    rule(:number => simple(:numstr))  { Float(numstr) }
-    rule(:name => simple(:varname))   { |d| data[d[:varname].to_s] }
-
-    rule(:left => simple(:l), :cmp => '<', :right => simple(:r)) { l < r }
-  end
-  pp.apply(pl.parse(str))
+  pp.apply( pl.parse(str) )
 rescue Parslet::ParseFailed => failure
   puts failure.cause.ascii_tree
 end
 # --------------------------------------------------------------
 puts resolve('a < 10', { 'a' => 8 })
-puts
 puts resolve('a < 10', { 'a' => 12 })
 

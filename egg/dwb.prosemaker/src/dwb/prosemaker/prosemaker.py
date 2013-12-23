@@ -1,10 +1,13 @@
-class ProseMaker:
+
+from docpart import DocPart
+
+class ProseMaker(object):
 
     def __init__(self):
         self._data   = {}
         self._source = ''
 
-    ## data
+    ## data ---------------------------------------------------------
     @property
     def data(self):
         """ The 'data' property """
@@ -19,7 +22,7 @@ class ProseMaker:
     def data(self):
         del self._data
 
-    ## source
+    ## source -------------------------------------------------------
     @property
     def source(self):
         """ The 'source' property """
@@ -28,14 +31,18 @@ class ProseMaker:
     @source.setter
     def source(self, value):
         self._source = value
+
+        raw_parts = self._source.split(r"\[\[")
+        self._parts = [DocPart(raw_part) for raw_part in raw_parts]
+
         return self._source
 
     @source.deleter
     def source(self):
         del self._source
 
-    ## doc
+    ## doc ----------------------------------------------------------
     @property
     def doc(self):
         """ The 'doc' property """
-        raise NotImplementedError("TODO - doc is not yet implemented")
+        return(self._source)

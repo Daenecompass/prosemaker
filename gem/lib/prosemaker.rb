@@ -1,6 +1,6 @@
 
 require 'prosemaker/docpart'
-require 'pp'
+require 'prosemaker/conditionparser'
 
 class ProseMaker
   # --------------------------------------------------
@@ -61,7 +61,15 @@ class ProseMaker
   end
   # --------------------------------------------------
   def resolve_condition condition
-    condition != 'never'
+    begin
+      return true if condition =~ /always/i
+      return false if condition =~ /never/i
+      @parser = ProseConditionParser.new if not @parser
+      @resolver = ProseConditionResolver.new(data) if not @resolver
+      @resolver.apply @parser.parse(condition)
+    rescue Parslet::ParseFailed => failure
+      puts failure.cause.ascii_tree
+    end
   end
   # --------------------------------------------------
   def resolve_part part

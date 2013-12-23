@@ -1,4 +1,4 @@
-class DocPart:
+class DocPart(object):
 
     def __init__(self, block=None):
         self._content = ''
@@ -7,18 +7,19 @@ class DocPart:
         if block:
             self.parse(block)
 
-    ## content
+    ## content ------------------------------------------------------
     @property
     def content(self):
         """ The 'content' property """
         return self._content
 
-    ## condition
+    ## condition ----------------------------------------------------
     @property
     def condition(self):
         """ The 'condition' property """
         return self._condition
 
+    # ---------------------------------------------------------------
     def parse(self, block):
         """ The 'parse' method """
         raise NotImplementedError("TODO - parse is not yet implemented")
