@@ -32,7 +32,7 @@ class ProseMaker(object):
     def source(self, value):
         self._source = value
 
-        raw_parts = self._source.split(r"\[\[")
+        raw_parts = self._source.split(r"[[") ###]]" ### stupid Sublime syntax highlighter
         self._parts = [DocPart(raw_part) for raw_part in raw_parts]
 
         return self._source
@@ -45,4 +45,57 @@ class ProseMaker(object):
     @property
     def doc(self):
         """ The 'doc' property """
-        return(self._source)
+
+        resolved_parts = [self.resolve_document_part(part) for part in self._parts]
+
+        return(''.join(resolved_parts))
+
+    # ---------------------------------------------------------------
+    def resolve_document_part(self, doc_part):
+        if self.resolve_condition(doc_part.condition):
+            return self.resolve_content(doc_part.content)
+        else:
+            return ''
+
+    # ---------------------------------------------------------------
+    def resolve_condition(self, condition):
+        return (condition == 'always')
+
+    # ---------------------------------------------------------------
+    def resolve_content(self, content):
+
+        content = str(content) # force it into a string form (probably it's already a string)
+
+        if len(self.data) > 0:
+
+            content = content + ' ' # add a trailing space so the split doesn't fail if the last thing is a var.
+
+            sorted_varnames = self.data.keys()
+            sorted_varnames.sort(key=len, reverse=True) # sort longest first
+
+            replacements = 1
+
+            while (replacements > 0):
+                replacements = 0
+                for varname in sorted_varnames:
+                    if ('$$' + varname) in content:
+                        content = content.replace('$$' + varname, str(self.data[varname]))
+                        replacements += 1
+
+            content = content[:-1] # remove the space we added at the start of this method
+
+        return content
+
+
+
+
+
+
+
+
+
+
+
+
+
+
