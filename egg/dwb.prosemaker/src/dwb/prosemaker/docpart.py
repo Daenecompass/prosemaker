@@ -13,12 +13,29 @@ class DocPart(object):
         """ The 'content' property """
         return self._content
 
+    @content.setter
+    def content(self, value):
+        self._content = value
+        return self._content
+
+    @content.deleter
+    def content(self):
+        del self._content
+
     ## condition ----------------------------------------------------
     @property
     def condition(self):
         """ The 'condition' property """
         return self._condition
 
+    @condition.setter
+    def condition(self, value):
+        self._condition = value
+        return self._condition
+
+    @condition.deleter
+    def condition(self):
+        del self._condition
     # ---------------------------------------------------------------
     def parse(self, block):
         """ Parses a string block that might start with a condition """
