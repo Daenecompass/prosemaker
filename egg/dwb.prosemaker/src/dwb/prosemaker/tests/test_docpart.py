@@ -52,8 +52,8 @@ class TestDocPart(unittest.TestCase):
         test_block = '[[' + test_condition + ']]' + test_content
         self.dp.parse(test_block)
 
-        self.assertEqual(dp.condition, test_condition)
-        self.assertEqual(dp.content, test_content)
+        self.assertEqual(self.dp.condition, test_condition)
+        self.assertEqual(self.dp.content, test_content)
 
     def test_parse_can_parse_a_conditional_block_without_leading_brackets(self):
         test_condition = 'a condition'
@@ -61,5 +61,5 @@ class TestDocPart(unittest.TestCase):
         test_block = test_condition + ']]' + test_content
         self.dp.parse(test_block)
 
-        self.assertEqual(dp.condition, test_condition)
-        self.assertEqual(dp.content, test_content)
+        self.assertEqual(self.dp.condition, test_condition)
+        self.assertEqual(self.dp.content, test_content)
