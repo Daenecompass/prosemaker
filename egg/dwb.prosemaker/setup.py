@@ -39,7 +39,7 @@ setup(
     setup_requires=[
         "nose>=1.0",
         "coverage>=1.0",
-        "parsimonious"
+        "parsimonious>=0.5"
     ],
     install_requires=[
         'setuptools',

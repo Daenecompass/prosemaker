@@ -59,7 +59,17 @@ class ProseMaker(object):
 
     # ---------------------------------------------------------------
     def resolve_condition(self, condition):
-        return (condition == 'always')
+        condition = str(condition)
+        if condition == 'always':
+            return True
+        if condition == 'never':
+            return False
+
+        # here's where the fancy parsing happens
+        #
+        #
+
+        raise Exception('condition not understood')
 
     # ---------------------------------------------------------------
     def resolve_content(self, content):
