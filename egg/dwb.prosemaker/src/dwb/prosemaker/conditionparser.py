@@ -36,6 +36,10 @@ class ConditionVisitor(NodeVisitor):
 
     # proper node handlers ------------------------------------------
 
+    def visit_condition(self, node, (ws1, disjunction, ws2)):
+        return disjunction
+
+
     def visit_disjunction(self, node, (firstterm, otherterms)):
         terms = [firstterm]
         if len(otherterms) > 0:
@@ -254,6 +258,7 @@ class ConditionParser(object):
         """ The 'result' property """
 
         g = Grammar("""
+            condition = ws disjunction ws
 
             disjunction = conjunction moreorconjunctions
             moreorconjunctions = orconjunction*
