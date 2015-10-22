@@ -39,7 +39,8 @@ setup(
     setup_requires=[
         "nose>=1.0",
         "coverage>=1.0",
-        "parsimonious>=0.5"
+        "parsimonious>=0.5",
+        "simplejson"
     ],
     install_requires=[
         'setuptools',

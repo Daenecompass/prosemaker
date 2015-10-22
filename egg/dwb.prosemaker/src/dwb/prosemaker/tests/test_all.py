@@ -1,7 +1,5 @@
 import unittest
 
-from dwb.prosemaker.tests.test_prosemaker import TestProseMaker
-
 class TestExample(unittest.TestCase):
 
     def setUp(self):
