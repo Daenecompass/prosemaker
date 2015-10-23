@@ -1,10 +1,11 @@
 
-prosemaker
+ProseMaker
 ==========
 
-Document assembly for scientific reporting
+**Document assembly for scientific reporting**
 
+[![Build Status](https://travis-ci.org/DanielBaird/prosemaker.svg)](https://travis-ci.org/DanielBaird/prosemaker)
 
-This has been rewritten in Python, and current development is happening inside the CliMAS NG project: https://github.com/jcu-eresearch/climas-ng .  Once I wrap up CliMAS NG, I'll move prosemaker into its own egg (or whatever the hell python will be using for distribution by then) that will be in this repo.
+Originally part of the CliMAS project: https://github.com/jcu-eresearch/climas-ng .
 
-22 October 2015: Now moving CliMAS improvements back into this repo.  I presented ProseMaker at a conference recently so in theory I have a lot of material that could go into this readme...
+23 October 2015: Moved CliMAS improvements back into this repo, which is now up to date with the version of ProseMaker I presented at the eResearch Australasia 2015 conference a few days ago.  It currently runs in Python 2.7, but not 3.x, so that's probably my next goal.
