@@ -1,0 +1,29 @@
+{
+  "name": "prosemaker",
+  "version": "0.0.1",
+  "description": "Document assembly for scientific reporting",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DanielBaird/prosemaker.git"
+  },
+  "engines": {
+    "node": "5.3.0"
+  },
+  "keywords": [
+    "prosemaker",
+    "prose",
+    "maker",
+    "document",
+    "assembly"
+  ],
+  "author": "Daniel Baird <daniel@danielbaird.com>",
+  "license": "Apache2",
+  "bugs": {
+    "url": "https://github.com/DanielBaird/prosemaker/issues"
+  },
+  "homepage": "https://github.com/DanielBaird/prosemaker"
+}
