@@ -8,4 +8,6 @@ ProseMaker
 
 Originally part of the CliMAS project: https://github.com/jcu-eresearch/climas-ng .
 
-23 October 2015: Moved CliMAS improvements back into this repo, which is now up to date with the version of ProseMaker I presented at the eResearch Australasia 2015 conference a few days ago.  It currently runs in Python 2.7, but not 3.x, so that's probably my next goal.
+23 October 2015: Moved improvements made as part of the CliMAS NG project back into this repo, which is now up to date with the version of ProseMaker I presented at the eResearch Australasia 2015 conference in October.  It currently runs in Python 2.7, but not 3.x.
+
+15 January 2015: Started a JavaScript version based on PEG.js.
