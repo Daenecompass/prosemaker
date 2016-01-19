@@ -27,59 +27,6 @@ module.exports = (function() {
 
   peg$subclass(peg$SyntaxError, Error);
 
-  function peg$DefaultTracer() {
-    this.indentLevel = 0;
-  }
-
-  peg$DefaultTracer.prototype.trace = function(event) {
-    var that = this;
-
-    function log(event) {
-      function repeat(string, n) {
-         var result = "", i;
-
-         for (i = 0; i < n; i++) {
-           result += string;
-         }
-
-         return result;
-      }
-
-      function pad(string, length) {
-        return string + repeat(" ", length - string.length);
-      }
-
-      if (typeof console === "object") {
-        console.log(
-          event.location.start.line + ":" + event.location.start.column + "-"
-            + event.location.end.line + ":" + event.location.end.column + " "
-            + pad(event.type, 10) + " "
-            + repeat("  ", that.indentLevel) + event.rule
-        );
-      }
-    }
-
-    switch (event.type) {
-      case "rule.enter":
-        log(event);
-        this.indentLevel++;
-        break;
-
-      case "rule.match":
-        this.indentLevel--;
-        log(event);
-        break;
-
-      case "rule.fail":
-        this.indentLevel--;
-        log(event);
-        break;
-
-      default:
-        throw new Error("Invalid event type: " + event.type + ".");
-    }
-  };
-
   function peg$parse(input) {
     var options = arguments.length > 1 ? arguments[1] : {},
         parser  = this,
@@ -89,19 +36,9 @@ module.exports = (function() {
         peg$startRuleFunctions = { prosemakerDoc: peg$parseprosemakerDoc },
         peg$startRuleFunction  = peg$parseprosemakerDoc,
 
-        peg$c0 = "[[",
-        peg$c1 = { type: "literal", value: "[[", description: "\"[[\"" },
-        peg$c2 = "]]",
-        peg$c3 = { type: "literal", value: "]]", description: "\"]]\"" },
-        peg$c4 = function(text) { return "\n(condition): " + text + "\n" },
-        peg$c5 = "{{",
-        peg$c6 = { type: "literal", value: "{{", description: "\"{{\"" },
-        peg$c7 = "}}",
-        peg$c8 = { type: "literal", value: "}}", description: "\"}}\"" },
-        peg$c9 = function(text) { return "\n(replaceable): " + text + "\n" },
-        peg$c10 = /^[a-zA-Z 0-9]/,
-        peg$c11 = { type: "class", value: "[a-zA-Z 0-9]", description: "[a-zA-Z 0-9]" },
-        peg$c12 = function(chars) { return chars.join("") },
+        peg$c0 = /^[a-zA-Z 0-9]/,
+        peg$c1 = { type: "class", value: "[a-zA-Z 0-9]", description: "[a-zA-Z 0-9]" },
+        peg$c2 = function(chars) { return chars },
 
         peg$currPos          = 0,
         peg$savedPos         = 0,
@@ -109,8 +46,6 @@ module.exports = (function() {
         peg$maxFailPos       = 0,
         peg$maxFailExpected  = [],
         peg$silentFails      = 0,
-
-        peg$tracer = "tracer" in options ? options.tracer : new peg$DefaultTracer(),
 
         peg$result;
 
@@ -291,321 +226,26 @@ module.exports = (function() {
     }
 
     function peg$parseprosemakerDoc() {
-      var s0, s1, s2, s3,
-          startPos = peg$currPos;
-
-      peg$tracer.trace({
-        type:     "rule.enter",
-        rule:     "prosemakerDoc",
-        location: peg$computeLocation(startPos, startPos)
-      });
-
-      s0 = peg$currPos;
-      s1 = peg$parsefirstDocSection();
-      if (s1 !== peg$FAILED) {
-        s2 = [];
-        s3 = peg$parsedocSection();
-        while (s3 !== peg$FAILED) {
-          s2.push(s3);
-          s3 = peg$parsedocSection();
-        }
-        if (s2 !== peg$FAILED) {
-          s1 = [s1, s2];
-          s0 = s1;
-        } else {
-          peg$currPos = s0;
-          s0 = peg$FAILED;
-        }
-      } else {
-        peg$currPos = s0;
-        s0 = peg$FAILED;
-      }
-
-      if (s0 !== peg$FAILED) {
-        peg$tracer.trace({
-          type:   "rule.match",
-          rule:   "prosemakerDoc",
-          result: s0,
-          location: peg$computeLocation(startPos, peg$currPos)
-        });
-      } else {
-        peg$tracer.trace({
-          type: "rule.fail",
-          rule: "prosemakerDoc",
-          location: peg$computeLocation(startPos, startPos)
-        });
-      }
-
-      return s0;
-    }
-
-    function peg$parsefirstDocSection() {
-      var s0,
-          startPos = peg$currPos;
-
-      peg$tracer.trace({
-        type:     "rule.enter",
-        rule:     "firstDocSection",
-        location: peg$computeLocation(startPos, startPos)
-      });
-
-      s0 = peg$parsetemplateText();
-      if (s0 === peg$FAILED) {
-        s0 = null;
-      }
-
-      if (s0 !== peg$FAILED) {
-        peg$tracer.trace({
-          type:   "rule.match",
-          rule:   "firstDocSection",
-          result: s0,
-          location: peg$computeLocation(startPos, peg$currPos)
-        });
-      } else {
-        peg$tracer.trace({
-          type: "rule.fail",
-          rule: "firstDocSection",
-          location: peg$computeLocation(startPos, startPos)
-        });
-      }
-
-      return s0;
-    }
-
-    function peg$parsedocSection() {
-      var s0, s1, s2,
-          startPos = peg$currPos;
-
-      peg$tracer.trace({
-        type:     "rule.enter",
-        rule:     "docSection",
-        location: peg$computeLocation(startPos, startPos)
-      });
-
-      s0 = peg$currPos;
-      s1 = peg$parsecondition();
-      if (s1 !== peg$FAILED) {
-        s2 = peg$parsetemplateText();
-        if (s2 === peg$FAILED) {
-          s2 = null;
-        }
-        if (s2 !== peg$FAILED) {
-          s1 = [s1, s2];
-          s0 = s1;
-        } else {
-          peg$currPos = s0;
-          s0 = peg$FAILED;
-        }
-      } else {
-        peg$currPos = s0;
-        s0 = peg$FAILED;
-      }
-
-      if (s0 !== peg$FAILED) {
-        peg$tracer.trace({
-          type:   "rule.match",
-          rule:   "docSection",
-          result: s0,
-          location: peg$computeLocation(startPos, peg$currPos)
-        });
-      } else {
-        peg$tracer.trace({
-          type: "rule.fail",
-          rule: "docSection",
-          location: peg$computeLocation(startPos, startPos)
-        });
-      }
-
-      return s0;
-    }
-
-    function peg$parsecondition() {
-      var s0, s1, s2, s3,
-          startPos = peg$currPos;
-
-      peg$tracer.trace({
-        type:     "rule.enter",
-        rule:     "condition",
-        location: peg$computeLocation(startPos, startPos)
-      });
-
-      s0 = peg$currPos;
-      if (input.substr(peg$currPos, 2) === peg$c0) {
-        s1 = peg$c0;
-        peg$currPos += 2;
-      } else {
-        s1 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c1); }
-      }
-      if (s1 !== peg$FAILED) {
-        s2 = peg$parseplainText();
-        if (s2 !== peg$FAILED) {
-          if (input.substr(peg$currPos, 2) === peg$c2) {
-            s3 = peg$c2;
-            peg$currPos += 2;
-          } else {
-            s3 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c3); }
-          }
-          if (s3 !== peg$FAILED) {
-            peg$savedPos = s0;
-            s1 = peg$c4(s2);
-            s0 = s1;
-          } else {
-            peg$currPos = s0;
-            s0 = peg$FAILED;
-          }
-        } else {
-          peg$currPos = s0;
-          s0 = peg$FAILED;
-        }
-      } else {
-        peg$currPos = s0;
-        s0 = peg$FAILED;
-      }
-
-      if (s0 !== peg$FAILED) {
-        peg$tracer.trace({
-          type:   "rule.match",
-          rule:   "condition",
-          result: s0,
-          location: peg$computeLocation(startPos, peg$currPos)
-        });
-      } else {
-        peg$tracer.trace({
-          type: "rule.fail",
-          rule: "condition",
-          location: peg$computeLocation(startPos, startPos)
-        });
-      }
-
-      return s0;
-    }
-
-    function peg$parsetemplateText() {
-      var s0,
-          startPos = peg$currPos;
-
-      peg$tracer.trace({
-        type:     "rule.enter",
-        rule:     "templateText",
-        location: peg$computeLocation(startPos, startPos)
-      });
-
-      s0 = peg$parsereplacementExpression();
-      if (s0 === peg$FAILED) {
-        s0 = peg$parseplainText();
-      }
-
-      if (s0 !== peg$FAILED) {
-        peg$tracer.trace({
-          type:   "rule.match",
-          rule:   "templateText",
-          result: s0,
-          location: peg$computeLocation(startPos, peg$currPos)
-        });
-      } else {
-        peg$tracer.trace({
-          type: "rule.fail",
-          rule: "templateText",
-          location: peg$computeLocation(startPos, startPos)
-        });
-      }
-
-      return s0;
-    }
-
-    function peg$parsereplacementExpression() {
-      var s0, s1, s2, s3,
-          startPos = peg$currPos;
-
-      peg$tracer.trace({
-        type:     "rule.enter",
-        rule:     "replacementExpression",
-        location: peg$computeLocation(startPos, startPos)
-      });
-
-      s0 = peg$currPos;
-      if (input.substr(peg$currPos, 2) === peg$c5) {
-        s1 = peg$c5;
-        peg$currPos += 2;
-      } else {
-        s1 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c6); }
-      }
-      if (s1 !== peg$FAILED) {
-        s2 = peg$parseplainText();
-        if (s2 !== peg$FAILED) {
-          if (input.substr(peg$currPos, 2) === peg$c7) {
-            s3 = peg$c7;
-            peg$currPos += 2;
-          } else {
-            s3 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c8); }
-          }
-          if (s3 !== peg$FAILED) {
-            peg$savedPos = s0;
-            s1 = peg$c9(s2);
-            s0 = s1;
-          } else {
-            peg$currPos = s0;
-            s0 = peg$FAILED;
-          }
-        } else {
-          peg$currPos = s0;
-          s0 = peg$FAILED;
-        }
-      } else {
-        peg$currPos = s0;
-        s0 = peg$FAILED;
-      }
-
-      if (s0 !== peg$FAILED) {
-        peg$tracer.trace({
-          type:   "rule.match",
-          rule:   "replacementExpression",
-          result: s0,
-          location: peg$computeLocation(startPos, peg$currPos)
-        });
-      } else {
-        peg$tracer.trace({
-          type: "rule.fail",
-          rule: "replacementExpression",
-          location: peg$computeLocation(startPos, startPos)
-        });
-      }
-
-      return s0;
-    }
-
-    function peg$parseplainText() {
-      var s0, s1, s2,
-          startPos = peg$currPos;
-
-      peg$tracer.trace({
-        type:     "rule.enter",
-        rule:     "plainText",
-        location: peg$computeLocation(startPos, startPos)
-      });
+      var s0, s1, s2;
 
       s0 = peg$currPos;
       s1 = [];
-      if (peg$c10.test(input.charAt(peg$currPos))) {
+      if (peg$c0.test(input.charAt(peg$currPos))) {
         s2 = input.charAt(peg$currPos);
         peg$currPos++;
       } else {
         s2 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c11); }
+        if (peg$silentFails === 0) { peg$fail(peg$c1); }
       }
       if (s2 !== peg$FAILED) {
         while (s2 !== peg$FAILED) {
           s1.push(s2);
-          if (peg$c10.test(input.charAt(peg$currPos))) {
+          if (peg$c0.test(input.charAt(peg$currPos))) {
             s2 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s2 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c11); }
+            if (peg$silentFails === 0) { peg$fail(peg$c1); }
           }
         }
       } else {
@@ -613,24 +253,9 @@ module.exports = (function() {
       }
       if (s1 !== peg$FAILED) {
         peg$savedPos = s0;
-        s1 = peg$c12(s1);
+        s1 = peg$c2(s1);
       }
       s0 = s1;
-
-      if (s0 !== peg$FAILED) {
-        peg$tracer.trace({
-          type:   "rule.match",
-          rule:   "plainText",
-          result: s0,
-          location: peg$computeLocation(startPos, peg$currPos)
-        });
-      } else {
-        peg$tracer.trace({
-          type: "rule.fail",
-          rule: "plainText",
-          location: peg$computeLocation(startPos, startPos)
-        });
-      }
 
       return s0;
     }
@@ -656,8 +281,7 @@ module.exports = (function() {
   }
 
   return {
-    SyntaxError:   peg$SyntaxError,
-    DefaultTracer: peg$DefaultTracer,
-    parse:         peg$parse
+    SyntaxError: peg$SyntaxError,
+    parse:       peg$parse
   };
 })();

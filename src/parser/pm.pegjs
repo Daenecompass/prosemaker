@@ -1,4 +1,11 @@
 
+
+prosemakerDoc
+  = chars:[a-zA-Z 0-9]+
+  { return chars }
+
+
+/*
 prosemakerDoc
   = firstDocSection docSection*
 
@@ -29,3 +36,4 @@ plainText
   = chars:[a-zA-Z 0-9]+
   { return chars.join("") }
 
+  */
