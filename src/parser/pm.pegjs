@@ -1,39 +1,41 @@
 
+prosemakerDoc = f:firstDocSection s:docSection*
+                    { return '' + f + s.join('') }
 
-prosemakerDoc
-  = chars:[a-zA-Z 0-9]+
-  { return chars }
+firstDocSection = t:templateText?
+                    { return '' + t }
 
+docSection = c:condition t:templateText*
+                    { return '' + c + t.join('') }
 
-/*
-prosemakerDoc
-  = firstDocSection docSection*
+templateText = r:replacementExpression
+                    { return '' + r }
+             / p:plainText
+                    { return '' + p }
 
-firstDocSection
-  = templateText?
+// conditions ---------------------------------------------
 
-docSection
-  = condition templateText?
+condition = "[[" text:conditionText "]]"
+                    { return '>>COND: ' + text + '<<' }
 
-condition
-  = "[[" text:conditionText "]]"
-  { return "\n(condition): " + text + "\n" }
+conditionText = p:plainText
+                    { return '' + p }
 
-conditionText
-  = plainText
+// replaceables -------------------------------------------
 
-templateText
-  = ( replacementExpression / plainText )
+replacementExpression = "{{" optWS text:replaceable optWS "}}"
+                    { return '>>REPLACER: ' + text + '<<' }
 
-replacementExpression
-  = "{{" text:replaceable "}}"
-  { return "\n(replaceable): " + text + "\n" }
+replaceable = p:plainText
+                    { return '' + p }
 
-replaceable
-  = plainText
+// whitespace ---------------------------------------------
 
-plainText
-  = chars:[a-zA-Z 0-9]+
-  { return chars.join("") }
+WS = [\n\t ]+
 
-  */
+optWS = WS?
+
+// text (this gets tedious) -------------------------------
+
+plainText = chars:[a-zA-Z 0-9\n\t\.]+
+                    { return chars.join('') }

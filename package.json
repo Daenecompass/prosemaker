@@ -4,7 +4,11 @@
   "description": "Document assembly for scientific reporting",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rm -rf dist/*",
+    "lint": "standard",
+    "build": "pegjs src/parser/pm.pegjs dist/pm.js && pegjs --trace src/parser/pm.pegjs dist/pm-trace.js",
+    "dev": "npm run lint && npm run build && npm run test",
+    "test": "node tests/test.js"
   },
   "repository": {
     "type": "git",
@@ -28,5 +32,12 @@
   "homepage": "https://github.com/DanielBaird/prosemaker",
   "dependencies": {
     "pegjs": "^0.9.0"
+  },
+  "devDependencies": {
+    "standard": "^6.0.5"
+  },
+  "standard": {
+    "ignore": ["dist/"]
   }
+
 }
