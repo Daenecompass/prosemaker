@@ -1,9 +1,10 @@
-language: python
-python:
-#  - "2.6"
-  - "2.7"
-#  - "3.2"
-#  - "3.3"
+language: node_js
+
+node_js:
+  - "stable"
+  - "5.5"
+  - "4.1"
+
 # command to install dependencies
 install:
     - cd egg/dwb.prosemaker
