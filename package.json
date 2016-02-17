@@ -1,7 +1,8 @@
 {
   "name": "prosemaker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Document assembly for scientific reporting",
+  "author": "Daniel Baird <daniel@danielbaird.com> (http://danielbaird.com)",
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf dist/*",

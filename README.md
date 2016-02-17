@@ -5,6 +5,7 @@ ProseMaker
 **Document assembly for scientific reporting**
 
 [![Build Status](https://travis-ci.org/DanielBaird/prosemaker.svg?branch=js-peg)](https://travis-ci.org/DanielBaird/prosemaker)
+[![npm](https://img.shields.io/npm/v/prosemaker.svg)](https://www.npmjs.com/package/prosemaker)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 This is the new JS version of ProseMaker, which will eventually officially
