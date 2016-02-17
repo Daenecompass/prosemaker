@@ -5,9 +5,3 @@ node_js:
   - "5.5"
   - "4.1"
 
-# command to install dependencies
-install:
-    - cd egg/dwb.prosemaker
-    - python setup.py develop
-# command to run tests
-script: python setup.py nosetests --with-coverage
