@@ -9,13 +9,14 @@
     "clean": "rm -rf dist/*",
     "lint": "standard",
     "parser": "pegjs src/parser/pmlang.pegjs dist/pmparse.js && pegjs --trace src/parser/pmlang.pegjs dist/pmparse-trace.js",
-    "test": "node tests/test.js",
+    "justtest": "node tests/test.js",
     "babel": "babel --presets es2015 --out-dir es5/  src/",
     "concat": "echo 'Remember to add browserify here or something'",
 
     "build": "npm run parser && npm run babel && npm run concat",
     "cleanbuild": "npm run clean && npm run build",
 
+    "test": "npm run cleanbuild && npm run justtest",
     "dev": "npm run lint && npm run build && npm run test",
 
     "dummy": "# just chillin'"
