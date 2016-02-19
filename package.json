@@ -4,22 +4,18 @@
   "description": "Document assembly for scientific reporting",
   "author": "Daniel Baird <daniel@danielbaird.com>",
   "main": "index.js",
-
   "scripts": {
     "clean": "rm -rf dist/*",
-    "lint": "standard",
-    "parser": "pegjs src/parser/pmlang.pegjs dist/pmparse.js && pegjs --trace src/parser/pmlang.pegjs dist/pmparse-trace.js",
+    "lint": "standard --verbose | snazzy",
+    "parser": "pegjs src/parser/pmlang.pegjs dist/pm-parse.js && pegjs --trace src/parser/pmlang.pegjs dist/pm-parse-trace.js",
     "justtest": "node tests/test.js",
     "babel": "babel --presets es2015 --out-dir es5/  src/",
-    "concat": "echo 'Remember to add browserify here or something'",
-
+    "concat": "cp es5/pm.js dist/pm.js && echo 'Remember to add browserify here or something'",
     "build": "npm run parser && npm run babel && npm run concat",
     "cleanbuild": "npm run clean && npm run build",
-
     "test": "npm run cleanbuild && npm run justtest",
-    "dev": "npm run lint && npm run build && npm run test",
-
-    "dummy": "# just chillin'"
+    "dev": "npm run lint && npm run test",
+    "dummy": "# just chillin', savin' yer comma stress"
   },
   "repository": {
     "type": "git",
@@ -46,6 +42,7 @@
   "devDependencies": {
     "babel-cli": "^6.5.1",
     "babel-preset-es2015": "^6.5.0",
+    "snazzy": "^3.0.0",
     "standard": "^6.0.5"
   },
   "standard": {

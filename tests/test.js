@@ -1,7 +1,7 @@
 
 'use strict'
 
-var pm = require('../index')()
+var pm = require('../index')
 var fs = require('fs')
 
 var test_file = '' + __dirname.split('/').pop() + '/tester.pm'

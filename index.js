@@ -1,3 +1,3 @@
 
-var ProseMaker = require('./es5/pm')
-module.exports = ProseMaker
+const ProseMaker = require('./dist/pm')
+module.exports = new ProseMaker()

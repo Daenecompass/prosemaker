@@ -12,7 +12,7 @@ firstDocSection = t:contentChunk*
                       type: 'section',
                       condition: {
                         type: 'condition',
-                        content: 'always'
+                        raw: 'always'
                       },
                       chunks: t
                     } }
@@ -24,7 +24,7 @@ docSection = c:conditionExpression t:contentChunk*
                       chunks: t
                     } }
 
-contentChunk = r:replacementExpression
+contentChunk = r:replaceableExpression
                     { return r }
              / t:textChunk
                     { return t }
@@ -32,7 +32,7 @@ contentChunk = r:replacementExpression
 textChunk = p:plainText
                     { return {
                       type: 'text',
-                      content: p
+                      raw: p
                     } }
 
 // conditions ---------------------------------------------
@@ -43,18 +43,18 @@ conditionExpression = "[[" c:condition "]]"
 condition = p:plainText
                     { return {
                       type: 'condition',
-                      content: p
+                      raw: p
                     }}
 
 // replaceables -------------------------------------------
 
-replacementExpression = "{{" optWS r:replaceable optWS "}}"
+replaceableExpression = "{{" optWS r:replaceable optWS "}}"
                     { return r }
 
 replaceable = p:plainText
                     { return {
                       type: 'replaceable',
-                      content: p
+                      raw: p
                     } }
 
 // whitespace ---------------------------------------------
