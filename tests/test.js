@@ -1,10 +1,10 @@
 
 'use strict'
 
-let parser = require('../dist/pm')
-let fs = require('fs')
+var parser = require('../dist/pm')
+var fs = require('fs')
 
-let test_file = '' + __dirname.split('/').pop() + '/tester.pm'
+var test_file = '' + __dirname.split('/').pop() + '/tester.pm'
 
 fs.readFile(test_file, function (err, data) {
   if (!err) {
