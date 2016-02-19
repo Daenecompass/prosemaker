@@ -1,8 +1,3 @@
 
-var parser = require('dist/pm')
-
-function ProseMaker() {
-  return parser;
-}
-
-module.exports = ProseMaker;
+var ProseMaker = require('./es5/pm')
+module.exports = ProseMaker
