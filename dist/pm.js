@@ -6,6 +6,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var parser = require('../dist/pm-parse');
+var replaceableResolver = require('./resolvers/replaceable');
 
 var PM = function () {
   function PM() {
@@ -36,7 +37,8 @@ var PM = function () {
         // section content
         console.log(section.chunks.map(function (chunk) {
           if (chunk.type === 'replaceable') {
-            return _this.resolveReplaceable(chunk, data);
+            // return '\n' + JSON.stringify(chunk) + '\n'
+            return replaceableResolver(chunk, data);
           } else if (chunk.type === 'text') {
             return chunk.raw;
           }

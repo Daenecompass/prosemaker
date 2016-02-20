@@ -2,6 +2,7 @@
 'use strict'
 
 let parser = require('../dist/pm-parse')
+let replaceableResolver = require('./resolvers/replaceable')
 
 class PM {
   constructor () {
@@ -29,7 +30,7 @@ class PM {
       console.log(
         section.chunks.map((chunk) => {
           if (chunk.type === 'replaceable') {
-            return this.resolveReplaceable(chunk, data)
+            return replaceableResolver(chunk, data)
           } else if (chunk.type === 'text') {
             return chunk.raw
           }
@@ -56,19 +57,6 @@ class PM {
     // - - - - - - - - - - - - - - - - - - - - -
     // if all else fails, return null
     return null
-  }
-  // ------------------------------------------------------
-  resolveReplaceable (replaceable, data) {
-    // bail if this isn't a replaceable object
-    if (replaceable.type !== 'replaceable') {
-      return null
-    }
-    // - - - - - - - - - - - - - - - - - - - - -
-    // TODO: look for data etc
-
-    // - - - - - - - - - - - - - - - - - - - - -
-    // fall back on returning the raw content
-    return '{{ ' + replaceable.raw + ' }}'
   }
 }
 

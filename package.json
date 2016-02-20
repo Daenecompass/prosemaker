@@ -10,7 +10,7 @@
     "parser": "pegjs src/parser/pmlang.pegjs dist/pm-parse.js && pegjs --trace src/parser/pmlang.pegjs dist/pm-parse-trace.js",
     "justtest": "node tests/test.js",
     "babel": "babel --presets es2015 --out-dir es5/  src/",
-    "concat": "cp es5/pm.js dist/pm.js && echo 'Remember to add browserify here or something'",
+    "concat": "cp -r es5/* dist/ && echo 'Remember to add browserify here or something'",
     "build": "npm run parser && npm run babel && npm run concat",
     "cleanbuild": "npm run clean && npm run build",
     "test": "npm run cleanbuild && npm run justtest",
