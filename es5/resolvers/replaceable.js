@@ -9,10 +9,12 @@ function resolveReplaceable(replaceable, data) {
   }
   // - - - - - - - - - - - - - - - - - - - - -
   var value = '';
-  // is it a literal?
+
   if (replaceable.value.type === 'replaceableValue') {
-    value = replaceable.value.raw;
+    // is it a replacable?
+    value = '[rp>' + replaceable.value.raw + '<rp]';
   } else if (replaceable.value.type === 'literal') {
+    // is it a literal?
     value = replaceable.value.content;
   }
 
