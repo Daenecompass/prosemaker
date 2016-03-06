@@ -8,8 +8,8 @@
     "clean": "rm -rf dist/*",
     "lint": "standard --verbose | snazzy",
     "parser": "pegjs src/parser/pmlang.pegjs dist/pm-parse.js && pegjs --trace src/parser/pmlang.pegjs dist/pm-parse-trace.js",
-    "justtest": "node --harmony tape tests/*.js | faucet || true",
-    "babel": "babel --presets es2015 --out-dir es5/  src/",
+    "justtest": "babel-tape-runner tests/*.js | faucet || true",
+    "babel": "babel --out-dir es5/  src/",
     "concat": "cp -r es5/* dist/ && echo 'Remember to add browserify here or something'",
     "build": "npm run parser && npm run babel && npm run concat",
     "cleanbuild": "npm run clean && npm run build",
@@ -42,6 +42,7 @@
   "devDependencies": {
     "babel-cli": "^6.5.1",
     "babel-preset-es2015": "^6.5.0",
+    "babel-tape-runner": "^2.0.1",
     "faucet": "0.0.1",
     "snazzy": "^3.0.0",
     "standard": "^6.0.5",
@@ -53,5 +54,8 @@
       "dist/",
       "es5/"
     ]
+  },
+  "babel": {
+    "presets": ["es2015"]
   }
 }
