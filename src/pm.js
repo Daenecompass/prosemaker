@@ -12,6 +12,8 @@ class PM {
   }
   // ------------------------------------------------------
   prose (inputDoc, data) {
+    let result = []
+
     // save the data
     this.data = data
 
@@ -20,24 +22,23 @@ class PM {
 
     // walk the ast sections, evaluating conditions
     this.ast.sections.forEach((section) => {
-      // section meta info
-      console.log([
-        '\n********* ' + section.type,
-        ' :: ' + section.condition.raw,
-        ' (' + this.resolveCondition(section.condition) + ')'
-      ].join(''))
-
-      // section content
-      console.log(
-        section.chunks.map((chunk) => {
+      // process each section, by checking the condition,
+      // and if the condition checks out, resolving chunks
+      // and appending the resolved content onto the result
+      // array.
+      if (this.resolveCondition(section.condition, data)) {
+        // condition is true; now collect chunks
+        section.chunks.forEach((chunk) => {
           if (chunk.type === 'replaceable') {
-            return replaceableResolver(chunk, data)
+            result.push(replaceableResolver(chunk, data))
           } else if (chunk.type === 'text') {
-            return chunk.raw
+            result.push(chunk.raw)
           }
-        }).join('')
-      )
+        })
+      }
     })
+
+    return result.join('')
   }
   // ------------------------------------------------------
   resolveCondition (condition, data) {

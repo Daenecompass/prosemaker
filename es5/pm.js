@@ -24,6 +24,8 @@ var PM = function () {
     value: function prose(inputDoc, data) {
       var _this = this;
 
+      var result = [];
+
       // save the data
       this.data = data;
 
@@ -32,18 +34,23 @@ var PM = function () {
 
       // walk the ast sections, evaluating conditions
       this.ast.sections.forEach(function (section) {
-        // section meta info
-        console.log(['\n********* ' + section.type, ' :: ' + section.condition.raw, ' (' + _this.resolveCondition(section.condition) + ')'].join(''));
-
-        // section content
-        console.log(section.chunks.map(function (chunk) {
-          if (chunk.type === 'replaceable') {
-            return replaceableResolver(chunk, data);
-          } else if (chunk.type === 'text') {
-            return chunk.raw;
-          }
-        }).join(''));
+        // process each section, by checking the condition,
+        // and if the condition checks out, resolving chunks
+        // and appending the resolved content onto the result
+        // array.
+        if (_this.resolveCondition(section.condition, data)) {
+          // condition is true; now collect chunks
+          section.chunks.forEach(function (chunk) {
+            if (chunk.type === 'replaceable') {
+              result.push(replaceableResolver(chunk, data));
+            } else if (chunk.type === 'text') {
+              result.push(chunk.raw);
+            }
+          });
+        }
       });
+
+      return result.join('');
     }
     // ------------------------------------------------------
 
