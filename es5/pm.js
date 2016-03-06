@@ -37,7 +37,6 @@ var PM = function () {
         // section content
         console.log(section.chunks.map(function (chunk) {
           if (chunk.type === 'replaceable') {
-            // return '\n' + JSON.stringify(chunk) + '\n'
             return replaceableResolver(chunk, data);
           } else if (chunk.type === 'text') {
             return chunk.raw;
@@ -67,22 +66,6 @@ var PM = function () {
       // - - - - - - - - - - - - - - - - - - - - -
       // if all else fails, return null
       return null;
-    }
-    // ------------------------------------------------------
-
-  }, {
-    key: 'resolveReplaceable',
-    value: function resolveReplaceable(replaceable, data) {
-      // bail if this isn't a replaceable object
-      if (replaceable.type !== 'replaceable') {
-        return null;
-      }
-      // - - - - - - - - - - - - - - - - - - - - -
-      // TODO: look for data etc
-
-      // - - - - - - - - - - - - - - - - - - - - -
-      // fall back on returning the raw content
-      return '{{ ' + replaceable.raw + ' }}';
     }
   }]);
 
