@@ -8,6 +8,7 @@ class PM {
   constructor () {
     this.data = {}
     this.ast = {}
+    this.version = 'beta'
   }
   // ------------------------------------------------------
   prose (inputDoc, data) {

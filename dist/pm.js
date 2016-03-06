@@ -14,6 +14,7 @@ var PM = function () {
 
     this.data = {};
     this.ast = {};
+    this.version = 'beta';
   }
   // ------------------------------------------------------
 
