@@ -142,7 +142,7 @@ module.exports = (function() {
               } },
         peg$c21 = function(p) { return {
                 type: 'replaceableValue',
-                raw: p
+                raw: p.trim() // removes the trailing whitespace TODO: fix plainText?
               } },
         peg$c22 = /^[\n\t ]/,
         peg$c23 = { type: "class", value: "[\\n\\t ]", description: "[\\n\\t ]" },
