@@ -18,39 +18,39 @@ function proseTest (t, data = {}, testList = []) {
 test('PM conditions: plain text', function (t) {
   proseTest(t, {}, [
     '||blank stays blank',
-    'text|text|plain text is included',
-  ]);
+    'text|text|plain text is included'
+  ])
 })
 // ----------------------------------------------------------------------------
-test.skip('PM conditions: always', function (t) {
+test('PM conditions: always', function (t) {
   proseTest(t, {}, [
     '[[always]]||always blank stays blank',
     '[[always]]text|text|always includes text',
-    '[[ always]]text|text|always space padding',
-    '[[always ]]text|text|always space padding',
-    '[[   always  ]]text|text|always space padding',
-    '[[AlWaYs]]text|text|always capitalisation',
-  ]);
+    '[[ always]]text|text|always space left padding',
+    '[[always ]]text|text|always space right padding',
+    '[[   always  ]]text|text|always space both sides padding',
+    '[[AlWaYs]]text|text|always capitalisation'
+  ])
 })
 // ----------------------------------------------------------------------------
-test.skip('PM conditions: never', function (t) {
+test('PM conditions: never', function (t) {
   proseTest(t, {}, [
     '[[never]]||never blank stays blank',
     '[[never]]text||never text stays blank',
-    '[[ never]]text|text|never space padding',
-    '[[never ]]text|text|never space padding',
-    '[[   never  ]]text|text|never space padding',
-    '[[NeVeR]]text|text|never capitalisation',
-  ]);
+    '[[ never]]text||never space left padding',
+    '[[never ]]text||never space right padding',
+    '[[   never  ]]text||never space both sides padding',
+    '[[NeVeR]]text||never capitalisation'
+  ])
 })
 // ----------------------------------------------------------------------------
-test.skip('PM conditions: always and never', function (t) {
+test('PM conditions: always and never', function (t) {
   proseTest(t, {}, [
     'showing[[never]]hiding|showing|default always > never',
     '[[never]]hiding[[always]]showing[[never]]hiding|showing|never > always > never',
     '[[never]][[always]]showing|showing|never blank > always',
     '[[never]]hiding[[always]]||never > always blank',
-    '[[always]][[never]]hiding||always blank > never',
-  ]);
+    '[[always]][[never]]hiding||always blank > never'
+  ])
 })
 // ----------------------------------------------------------------------------

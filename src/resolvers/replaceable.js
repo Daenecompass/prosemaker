@@ -11,7 +11,7 @@ function resolveReplaceable (replaceable, data) {
 
   if (replaceable.value.type === 'replaceableValue') {
     // is it a replacable?
-    value = '[rp>' + replaceable.value.raw + '<rp]'
+    value = '[rp>' + replaceable.value.raw.trim() + '<rp]'
   } else if (replaceable.value.type === 'literal') {
     // is it a literal?
     value = replaceable.value.content

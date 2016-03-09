@@ -142,7 +142,7 @@ module.exports = (function() {
               } },
         peg$c21 = function(p) { return {
                 type: 'replaceableValue',
-                raw: p.trim() // removes the trailing whitespace TODO: fix plainText?
+                raw: p
               } },
         peg$c22 = /^[\n\t ]/,
         peg$c23 = { type: "class", value: "[\\n\\t ]", description: "[\\n\\t ]" },
@@ -566,7 +566,7 @@ module.exports = (function() {
     }
 
     function peg$parseconditionExpression() {
-      var s0, s1, s2, s3,
+      var s0, s1, s2, s3, s4,
           startPos = peg$currPos;
 
       peg$tracer.trace({
@@ -584,19 +584,25 @@ module.exports = (function() {
         if (peg$silentFails === 0) { peg$fail(peg$c7); }
       }
       if (s1 !== peg$FAILED) {
-        s2 = peg$parsecondition();
+        s2 = peg$parseoptWS();
         if (s2 !== peg$FAILED) {
-          if (input.substr(peg$currPos, 2) === peg$c8) {
-            s3 = peg$c8;
-            peg$currPos += 2;
-          } else {
-            s3 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c9); }
-          }
+          s3 = peg$parsecondition();
           if (s3 !== peg$FAILED) {
-            peg$savedPos = s0;
-            s1 = peg$c10(s2);
-            s0 = s1;
+            if (input.substr(peg$currPos, 2) === peg$c8) {
+              s4 = peg$c8;
+              peg$currPos += 2;
+            } else {
+              s4 = peg$FAILED;
+              if (peg$silentFails === 0) { peg$fail(peg$c9); }
+            }
+            if (s4 !== peg$FAILED) {
+              peg$savedPos = s0;
+              s1 = peg$c10(s3);
+              s0 = s1;
+            } else {
+              peg$currPos = s0;
+              s0 = peg$FAILED;
+            }
           } else {
             peg$currPos = s0;
             s0 = peg$FAILED;

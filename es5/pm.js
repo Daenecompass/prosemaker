@@ -62,7 +62,7 @@ var PM = function () {
         return null;
       }
       // for convenience, downcase the raw text
-      var rawDown = condition.raw.toLowerCase();
+      var rawDown = condition.raw.toLowerCase().trim();
       // - - - - - - - - - - - - - - - - - - - - -
       // handle the straight booleans
       if (rawDown === 'always') {

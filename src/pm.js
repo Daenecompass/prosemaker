@@ -47,7 +47,7 @@ class PM {
       return null
     }
     // for convenience, downcase the raw text
-    const rawDown = condition.raw.toLowerCase()
+    const rawDown = condition.raw.toLowerCase().trim()
     // - - - - - - - - - - - - - - - - - - - - -
     // handle the straight booleans
     if (rawDown === 'always') {
