@@ -14,8 +14,9 @@
     "build": "npm run parser && npm run babel && npm run concat",
     "cleanbuild": "npm run clean && npm run build",
     "test": "npm run cleanbuild && npm run justtest",
+    "watchtest": "watch 'npm run justtest' tests/",
     "dev": "npm run lint && npm run test",
-    "dummy": "# just chillin', savin' yer comma stress"
+    "dummy": "# just chillin', savin' yer trailing comma stress"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "prose",
     "maker",
     "document",
+    "report",
     "assembly"
   ],
   "license": "Apache-2.0",
@@ -47,7 +49,8 @@
     "snazzy": "^3.0.0",
     "standard": "^6.0.5",
     "tap-spec": "^4.1.1",
-    "tape": "^4.5.0"
+    "tape": "^4.5.0",
+    "watch": "^0.17.1"
   },
   "standard": {
     "ignore": [
@@ -56,6 +59,8 @@
     ]
   },
   "babel": {
-    "presets": ["es2015"]
+    "presets": [
+      "es2015"
+    ]
   }
 }
