@@ -14,7 +14,7 @@ firstDocSection
         type: 'section',
         condition: {
           type: 'condition',
-          raw: 'always'
+          content: { type: 'always' }
         },
         chunks: t
       } }
@@ -47,11 +47,25 @@ conditionExpression
       { return c }
 
 condition
-  = p:plainText
+  = a: absoluteCondition
       { return {
         type: 'condition',
-        raw: p
+        content: a
       }}
+
+absoluteCondition
+  = a:alwaysCondition { return a }
+  / n:neverCondition { return n }
+
+alwaysCondition
+  = optWS [Aa][Ll][Ww][Aa][Yy][Ss] optWS { return {
+    type: 'always'
+  }}
+
+neverCondition
+  = optWS [Nn][Ee][Vv][Ee][Rr] optWS { return {
+    type: 'never'
+  }}
 
 // replaceables -------------------------------------------
 

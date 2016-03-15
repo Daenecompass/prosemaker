@@ -46,14 +46,12 @@ class PM {
     if (condition.type !== 'condition') {
       return null
     }
-    // for convenience, downcase the raw text
-    const rawDown = condition.raw.toLowerCase()
     // - - - - - - - - - - - - - - - - - - - - -
     // handle the straight booleans
-    if (rawDown === 'always') {
+    if (condition.content.type === 'always') {
       return true
     }
-    if (rawDown === 'never') {
+    if (condition.content.type === 'never') {
       return false
     }
     // - - - - - - - - - - - - - - - - - - - - -
