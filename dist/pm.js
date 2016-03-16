@@ -38,7 +38,17 @@ var PM = function () {
         // and if the condition checks out, resolving chunks
         // and appending the resolved content onto the result
         // array.
-        if (_this.resolveCondition(section.condition, data)) {
+        var conditionResolution = _this.resolveCondition(section.condition, data);
+
+        // if the condition resolution returns a string, it's
+        // un-handled, so just include the string
+        if (typeof conditionResolution === 'string') {
+          result.push(conditionResolution);
+        }
+
+        // if the condition is a string OR if it's true, include the
+        // chunks of this section
+        if (conditionResolution) {
           // condition is true; now collect chunks
           section.chunks.forEach(function (chunk) {
             if (chunk.type === 'replaceable') {
@@ -47,6 +57,9 @@ var PM = function () {
               result.push(chunk.raw);
             }
           });
+        } else {
+          // the conditionResolution was false, so don't add anything
+          // to the result string.
         }
       });
 
@@ -68,6 +81,11 @@ var PM = function () {
       }
       if (condition.content.type === 'never') {
         return false;
+      }
+      // - - - - - - - - - - - - - - - - - - - - -
+      // handle an unrecognised condition
+      if (condition.content.type === 'unrecognised') {
+        return '[[' + condition.content.content + ']]';
       }
       // - - - - - - - - - - - - - - - - - - - - -
       // if all else fails, return null

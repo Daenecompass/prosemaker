@@ -56,6 +56,7 @@ condition
 absoluteCondition
   = a:alwaysCondition { return a }
   / n:neverCondition { return n }
+  / u:unrecognisedCondition { return u }
 
 alwaysCondition
   = optWS [Aa][Ll][Ww][Aa][Yy][Ss] optWS { return {
@@ -65,6 +66,12 @@ alwaysCondition
 neverCondition
   = optWS [Nn][Ee][Vv][Ee][Rr] optWS { return {
     type: 'never'
+  }}
+
+unrecognisedCondition
+  = p:plainText { return {
+    type: 'unrecognised',
+    content: p
   }}
 
 // replaceables -------------------------------------------
