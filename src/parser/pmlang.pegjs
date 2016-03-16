@@ -104,7 +104,7 @@ replaceableValue
   = p:plainText
       { return {
         type: 'replaceableValue',
-        raw: p.trim() // removes the trailing whitespace TODO: fix plainText?
+        raw: p
       } }
 
 // whitespace ---------------------------------------------
