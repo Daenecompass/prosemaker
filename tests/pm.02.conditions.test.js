@@ -58,7 +58,9 @@ test('PM conditions: unrecognised', function (t) {
   proseTest(t, {}, [
     '[[unrecognised]]|[[unrecognised]]|unrecognised condition stays in',
     '[[  unrecognised ]]text|[[  unrecognised ]]text|unrecognised condition keeps whitespace',
-    '[[unrecognised]]text|[[unrecognised]]text|unrecognised condition acts as true'
+    '[[unrecognised]]text|[[unrecognised]]text|unrecognised condition acts as true',
+    '[[dt s sadf sdc  ]]text|[[dt s sadf sdc  ]]text|unrecognised condition is preserved',
+    '[[1. Dt S sadf sdc  ]]text|[[1. Dt S sadf sdc  ]]text|unrecognised condition keeps caps etc'
   ])
 })
 // ----------------------------------------------------------------------------
