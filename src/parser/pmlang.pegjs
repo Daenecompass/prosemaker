@@ -122,5 +122,5 @@ optWS = ws:WS?
 // text (this gets tedious) -------------------------------
 
 plainText
-  = chars:[a-zA-Z 0-9\n\t\.]+
+  = chars:[a-zA-Z 0-9\n\r\t\.]+
       { return chars.join('') }
