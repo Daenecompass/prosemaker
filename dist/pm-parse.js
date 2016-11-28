@@ -130,8 +130,8 @@ module.exports = (function() {
               } else {
                 return ws
               } },
-        peg$c50 = /^[a-zA-Z 0-9\n\t.]/,
-        peg$c51 = { type: "class", value: "[a-zA-Z 0-9\\n\\t\\.]", description: "[a-zA-Z 0-9\\n\\t\\.]" },
+        peg$c50 = /^[a-zA-Z 0-9\n\r\t.]/,
+        peg$c51 = { type: "class", value: "[a-zA-Z 0-9\\n\\r\\t\\.]", description: "[a-zA-Z 0-9\\n\\r\\t\\.]" },
         peg$c52 = function(chars) { return chars.join('') },
 
         peg$currPos          = 0,
