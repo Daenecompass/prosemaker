@@ -1,31 +1,19 @@
+{
+  var replaceableResolver = require('./resolvers/replaceable')
+}
 
 prosemakerDoc
   = f:firstDocSection s:docSection*
-      { var sections = []
-        sections.push(f)
-        return {
-          type: 'document',
-          sections: sections.concat(s)
-      } }
+      { return f + s.join('') }
 
 firstDocSection
   = t:contentChunk*
-      { return {
-        type: 'section',
-        condition: {
-          type: 'condition',
-          content: { type: 'always' }
-        },
-        chunks: t
-      } }
+      { return t.join('') }
 
 docSection
   = c:conditionExpression t:contentChunk*
-      { return {
-        type: 'section',
-        condition: c,
-        chunks: t
-      } }
+      { if (c) { return t.join('') }}
+//      else { return c.join('') + t.join('') }
 
 contentChunk
   = r:replaceableExpression
@@ -35,10 +23,7 @@ contentChunk
 
 textChunk
   = p:plainText
-      { return {
-        type: 'text',
-        raw: p
-      } }
+      { return p }
 
 // conditions ---------------------------------------------
 
@@ -48,79 +33,78 @@ conditionExpression
 
 condition
   = a: absoluteCondition
-      { return {
-        type: 'condition',
-        content: a
-      }}
+      { return a }
 
 absoluteCondition
   = a:alwaysCondition { return a }
   / n:neverCondition { return n }
-  / u:unrecognisedCondition { return u }
+//  / u:unrecognisedCondition { return u }
+//  / g:greaterThanOneCondition { return g }
 
 alwaysCondition
-  = optWS [Aa][Ll][Ww][Aa][Yy][Ss] optWS { return {
-    type: 'always'
-  }}
+  = optWS word:'always'i optWS { return true }
 
 neverCondition
-  = optWS [Nn][Ee][Vv][Ee][Rr] optWS { return {
-    type: 'never'
-  }}
+  = optWS word:'never'i optWS { return false }
 
-unrecognisedCondition
-  = p:plainText { return {
-    type: 'unrecognised',
-    content: p
-  }}
+//unrecognisedCondition
+//  = optWS plainText? optWS { return chars.join('') }
+
+//greaterThanOneCondition
+//  = integer:replaceableExpression > 1 { return 's'}
 
 // replaceables -------------------------------------------
 
 replaceableExpression
   = "{{" optWS r:replaceable optWS "}}"
-      { return r }
+      { return replaceableResolver(r, options.data) }
 
 replaceable
-  = v:replaceableValue optWS ","? l:transformList?
-      { return {
-        type: 'replaceable',
-        value: v,
-        transforms: l
-      } }
-
-transformList
-  = t:transform (optWS "," optWS l:transform)*
-      { return [t].concat(l) }
+  = v:replaceableValue t:transform*
+      { return { value:v, transforms:t } }
 
 transform
-  = p:plainText
-      { return {
-        type: 'transform',
-        raw: p,
-        args: []
-      } }
+  = optWS ',' optWS n:transformName
+      { return { name:n, parameters:[]} }
 
 replaceableValue
-  = p:plainText
-      { return {
-        type: 'replaceableValue',
-        raw: p
-      } }
+  = w:word
+      { return w }
 
+transformName
+  = w:word
+      { return w }
 // whitespace ---------------------------------------------
 
-WS = ws:[\n\t ]+
-      { return ws.join('') }
+WS
+  = ws:[\n\t ]+
+    { return ws.join('') }
 
-optWS = ws:WS?
-      { if (typeof ws === 'undefined') {
-        return ''
-      } else {
-        return ws
-      } }
+optWS
+  = ws:WS?
+    { if (typeof ws === 'undefined') {
+      return ''
+    } else {
+      return ws
+    } }
+
+// comparators --------------------------------------------
+
+//greaterThanOne
+//  = left:integer > 1 { return true }
+
+// arithmatic ---------------------------------------------
+
+integer 'integer'
+  = digits:[0-9]+
+      { return parseInt(digits.join(""), 10); }
 
 // text (this gets tedious) -------------------------------
 
 plainText
-  = chars:[a-zA-Z 0-9\n\r\t\.]+
+  = chars:[a-zA-Z0-9 \n\r\t.,()-><]+
+      { return chars.join('') }
+
+word
+  = chars:[a-zA-Z0-9\._]+
       { return chars.join('') }

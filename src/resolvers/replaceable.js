@@ -1,26 +1,69 @@
 
 // resolve replaceables
+function resolveReplaceable (replaceable, data = {}) {
+  // The structure of a replaceable should look like {
+  //     value: <replaceableValue>,
+  //     transforms: array of [
+  //         { name: <transformName>, parameters: [<param1>, <param2>, ...] }
+  //     ]
+  // }
+  let value = replaceable.value
 
-function resolveReplaceable (replaceable, data) {
-  // bail if this isn't a replaceable object
-  if (replaceable.type !== 'replaceable') {
-    return null
+  if (data[value] !== undefined) {
+    value = data[value]
   }
-  // - - - - - - - - - - - - - - - - - - - - -
-  let value = ''
-
-  if (replaceable.value.type === 'replaceableValue') {
-    // is it a replacable?
-    value = '[rp>' + replaceable.value.raw.trim() + '<rp]'
-  } else if (replaceable.value.type === 'literal') {
-    // is it a literal?
-    value = replaceable.value.content
-  }
-
   // - - - - - - - - - - - - - - - - - - - - -
   // now do transforms
-  // ... TODO ...
+  replaceable.transforms.forEach((tf) => {
+    let tfName = tf.name.toLowerCase()
+    // check if value is a number
+    let isValueNumber = false
+    if (!isNaN(value)) {
+      isValueNumber = true
+      value = parseFloat(value)
+    }
 
+    if (tfName === 'allcaps') {
+      // capitalise all the things
+      value = value.toUpperCase()
+      // ------------------------
+    } else if (tfName === 'nocaps') {
+      // make all lowercase
+      value = value.toLowerCase()
+      // ------------------------
+    } else if (tfName === 'absolute') {
+      // return absolute value
+      if (!isNaN(value)) {
+        value = Math.abs(value)
+      }
+      // ------------------------
+    } else if (tfName === 'round') {
+      // return rounded value
+      if (isValueNumber) {
+//        if (parameters given) {
+//          value = Math.roundParameter(value)
+//        } else {
+        value = Math.round(value)
+      }
+      // ------------------------
+    } else if (tfName === 'roundup') {
+      // return rounded up value
+      if (isValueNumber) {
+        value = Math.round(value + 0.5)
+      }
+      // ------------------------
+    } else if (tfName === 'rounddown') {
+      // return rounded down value
+      if (isValueNumber) {
+        value = Math.round(value - 0.5)
+      }
+      // ------------------------
+    } else {
+      // unknown transform
+      // peforms no transformation
+      // returns transform details as string by default
+    }
+  })
   return value
 };
 

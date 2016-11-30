@@ -54,7 +54,7 @@ test('PM conditions: always and never', function (t) {
   ])
 })
 // ----------------------------------------------------------------------------
-test('PM conditions: unrecognised', function (t) {
+test.skip('PM conditions: unrecognised', function (t) {
   proseTest(t, {}, [
     '[[unrecognised]]|[[unrecognised]]|unrecognised condition stays in',
     '[[  unrecognised ]]text|[[  unrecognised ]]text|unrecognised condition keeps whitespace',
