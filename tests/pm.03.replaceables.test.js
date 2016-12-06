@@ -111,3 +111,48 @@ test('PM replaceables: handling roundDown transform', function (t) {
   ])
 })
 // ----------------------------------------------------------------------------
+test('PM replaceables: handling add transform', function (t) {
+  proseTest(t, {
+    five: 5
+  }, [
+    '{{five, add 5}}|10|testing add transform works',
+    '{{five, add 5 5}}|15|testing add transform works with multiple parameters'
+    // '{{five, add 5 five}}|10|testing add transform handles non-numeric parameters'
+  ])
+})
+// ----------------------------------------------------------------------------
+test('PM replaceables: handling subtract transform', function (t) {
+  proseTest(t, {
+    ten: 10
+  }, [
+    '{{ten, subtract 5}}|5|testing subtract transform works',
+    '{{ten, subtract 5 5}}|0|testing subtract transform works with multiple parameters',
+    '{{ten, subtract 15}}|-5|testing subtract transform works when result is negative'
+    // '{{ten, subtract 5 five}}|10|testing subtract transform handles non-numeric parameters'
+  ])
+})
+// ----------------------------------------------------------------------------
+test.skip('PM replaceables: handling unknown transform', function (t) {
+  proseTest(t, {
+    placeholder: 'text'
+  }, [
+    '{{placeholder, spin}}|placeholder, spin|testing parser returns unknown transforms as is',
+    '{{placeholder, spin 5}}|placeholder, spin 5|testing parser returns unknown transforms as is with parameter'
+  ])
+})
+// ----------------------------------------------------------------------------
+test('PM replaceables: chaining transforms', function (t) {
+  proseTest(t, {
+    ten: 10,
+    fivepointfour: 5.4,
+    fivepointfive: 5.5
+  }, [
+    '{{ten, subtract 4.5, roundUp}}|6|testing chaining transforms works (subtract + roundUp)',
+    '{{ten, add 6.7, roundDown}}|16|testing chaining transforms works (add + roundDown)',
+    '{{fivepointfour, round, add 3.5}}|8.5|testing chaining transforms works (round + add)',
+    '{{fivepointfive, round, add 3.5}}|9.5|testing chaining transforms works (round + add)',
+    '{{fivepointfive, add 2.9, round}}|8|testing chaining transforms works (add + round)',
+    '{{fivepointfive, add 3, round}}|9|testing chaining transforms works (add + round)'
+  ])
+})
+// ----------------------------------------------------------------------------

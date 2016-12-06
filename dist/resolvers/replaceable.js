@@ -10,7 +10,17 @@ function resolveReplaceable(replaceable) {
   //         { name: <transformName>, parameters: [<param1>, <param2>, ...] }
   //     ]
   // }
+
+  function isNumber(value) {
+    if (!isNaN(value)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   var value = replaceable.value;
+  var tfParams = [];
 
   if (data[value] !== undefined) {
     value = data[value];
@@ -19,6 +29,10 @@ function resolveReplaceable(replaceable) {
   // now do transforms
   replaceable.transforms.forEach(function (tf) {
     var tfName = tf.name.toLowerCase();
+    if (tf.parameters !== undefined) {
+      tfParams = tf.parameters;
+    }
+
     // check if value is a number
     var isValueNumber = false;
     if (!isNaN(value)) {
@@ -43,22 +57,45 @@ function resolveReplaceable(replaceable) {
     } else if (tfName === 'round') {
       // return rounded value
       if (isValueNumber) {
-        //        if (parameters given) {
-        //          value = Math.roundParameter(value)
-        //        } else {
+        // if (parameters given) {
+        //   value = Math.roundParameter(value)
+        // } else {
         value = Math.round(value);
       }
+      //  }
       // ------------------------
     } else if (tfName === 'roundup') {
       // return rounded up value
       if (isValueNumber) {
-        value = Math.round(value + 0.5);
+        value = Math.round(value + 0.49);
       }
       // ------------------------
     } else if (tfName === 'rounddown') {
       // return rounded down value
       if (isValueNumber) {
-        value = Math.round(value - 0.5);
+        value = Math.round(value - 0.49);
+      }
+      // ------------------------
+    } else if (tfName === 'add') {
+      // return summed value
+      if (isValueNumber) {
+        tfParams.forEach(function (p) {
+          console.log(p);
+          if (isNumber(p)) {
+            value = value + parseFloat(p);
+          }
+        });
+      }
+      // ------------------------
+    } else if (tfName === 'subtract') {
+      // return subtracted value
+      if (isValueNumber) {
+        tfParams.forEach(function (p) {
+          console.log(p);
+          if (isNumber(p)) {
+            value = value - parseFloat(p);
+          }
+        });
       }
       // ------------------------
     } else {

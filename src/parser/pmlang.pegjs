@@ -36,22 +36,18 @@ condition
       { return a }
 
 absoluteCondition
-  = a:alwaysCondition { return a }
-  / n:neverCondition { return n }
-//  / u:unrecognisedCondition { return u }
-//  / g:greaterThanOneCondition { return g }
+  = a:alwaysCondition
+      { return a }
+  / n:neverCondition
+      { return n }
 
 alwaysCondition
-  = optWS word:'always'i optWS { return true }
+  = optWS word:'always'i optWS
+      { return true }
 
 neverCondition
-  = optWS word:'never'i optWS { return false }
-
-//unrecognisedCondition
-//  = optWS plainText? optWS { return chars.join('') }
-
-//greaterThanOneCondition
-//  = integer:replaceableExpression > 1 { return 's'}
+  = optWS word:'never'i optWS
+      { return false }
 
 // replaceables -------------------------------------------
 
@@ -64,8 +60,8 @@ replaceable
       { return { value:v, transforms:t } }
 
 transform
-  = optWS ',' optWS n:transformName
-      { return { name:n, parameters:[]} }
+  = optWS ',' optWS n:transformName p:parameter*
+      { return { name:n, parameters:p} }
 
 replaceableValue
   = w:word
@@ -74,6 +70,11 @@ replaceableValue
 transformName
   = w:word
       { return w }
+
+parameter
+  = optWS i:integer
+      { return i }
+
 // whitespace ---------------------------------------------
 
 WS
@@ -96,8 +97,8 @@ optWS
 // arithmatic ---------------------------------------------
 
 integer 'integer'
-  = digits:[0-9]+
-      { return parseInt(digits.join(""), 10); }
+  = chars:[0-9.]+
+      { return parseFloat(chars.join(''), 10); }
 
 // text (this gets tedious) -------------------------------
 
