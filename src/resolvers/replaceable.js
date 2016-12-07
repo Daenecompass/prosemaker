@@ -77,7 +77,6 @@ function resolveReplaceable (replaceable, data = {}) {
       // return summed value
       if (isValueNumber) {
         tfParams.forEach((p) => {
-          console.log(p)
           if (isNumber(p)) {
             value = value + parseFloat(p)
           }
@@ -88,11 +87,81 @@ function resolveReplaceable (replaceable, data = {}) {
       // return subtracted value
       if (isValueNumber) {
         tfParams.forEach((p) => {
-          console.log(p)
           if (isNumber(p)) {
             value = value - parseFloat(p)
           }
         })
+      }
+      // ------------------------
+    } else if (tfName === 'plural') {
+      // return correct plural value
+      if (isValueNumber) {
+        if (value === 1.0) {
+          if (tfParams[0] !== undefined) {
+            value = '' + value + ' ' + tfParams[0]
+          } else {
+            value = '' + value + ' ' + '(item)'
+          }
+        } else if (tfParams[0] !== undefined && tfParams[1] === undefined) {
+          value = '' + value + ' ' + tfParams[0] + 's'
+        } else if (tfParams[1] !== undefined) {
+          value = '' + value + ' ' + tfParams[1]
+        } else {
+          value = '' + value + ' ' + '(items)'
+        }
+      }
+      // ------------------------
+    } else if (tfName === 'change') {
+      // return correct change value
+      if (isValueNumber) {
+        if (value > 0) {
+          if (tfParams[0] !== undefined) {
+            value = tfParams[0]
+          } else {
+            value = 'increase'
+          }
+        } else if (value < 0) {
+          if (tfParams[1] !== undefined) {
+            value = tfParams[1]
+          } else {
+            value = 'decrease'
+          }
+        } else {
+          if (tfParams[2] !== undefined) {
+            value = tfParams[2]
+          } else {
+            value = 'change'
+          }
+        }
+      }
+      // ------------------------
+    } else if (tfName === 'ordinal') {
+      // return correct ordinalisation
+      if (isValueNumber) {
+        value = value.toString()
+        if (value.includes('.')) {
+          value = value + 'th'
+        } else if (value.endsWith('1')) {
+          if (!value.endsWith('11')) {
+            value = value + 'st'
+          } else {
+            value = value + 'th'
+          }
+        } else if (value.endsWith('2')) {
+          if (!value.endsWith('12')) {
+            value = value + 'nd'
+          } else {
+            value = value + 'th'
+          }
+        } else if (value.endsWith('3')) {
+          if (!value.endsWith('13')) {
+            value = value + 'rd'
+          } else {
+            value = value + 'th'
+          }
+        } else {
+          value = value + 'th'
+        }
       }
       // ------------------------
     } else {

@@ -74,6 +74,8 @@ transformName
 parameter
   = optWS i:integer
       { return i }
+    / optWS w:word
+      { return w }
 
 // whitespace ---------------------------------------------
 
