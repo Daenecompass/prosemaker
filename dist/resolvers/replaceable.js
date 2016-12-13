@@ -101,16 +101,16 @@ function resolveReplaceable(replaceable) {
       if (isValueNumber) {
         if (value === 1.0) {
           if (tfParams[0] !== undefined) {
-            value = '' + value + ' ' + tfParams[0];
+            value = value.toString() + ' ' + tfParams[0];
           } else {
-            value = '' + value + ' ' + '(item)';
+            value = value.toString() + ' ' + '(item)';
           }
         } else if (tfParams[0] !== undefined && tfParams[1] === undefined) {
-          value = '' + value + ' ' + tfParams[0] + 's';
+          value = value.toString() + ' ' + tfParams[0] + 's';
         } else if (tfParams[1] !== undefined) {
-          value = '' + value + ' ' + tfParams[1];
+          value = value.toString() + ' ' + tfParams[1];
         } else {
-          value = '' + value + ' ' + '(items)';
+          value = value.toString() + ' ' + '(items)';
         }
       }
       // ------------------------

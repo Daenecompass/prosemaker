@@ -227,3 +227,15 @@ test('PM replaceables: ordinal transforms', function (t) {
   ])
 })
 // ----------------------------------------------------------------------------
+test('PM replaceables: multiple round substitutions', function (t) {
+  proseTest(t, {
+    daytypeTestOne: 'weekday',
+    daytypeTestTwo: 'weekend',
+    alarm_weekday_time: '6am',
+    alarm_weekend_time: '9am'
+  }, [
+    '{{alarm_{{daytypeTestOne}}_time}}|6am|testing parser completes multiple round substitutions',
+    '{{alarm_{{daytypeTestTwo}}_time}}|9am|testing parser completes multiple round substitutions (comparison data)'
+  ])
+})
+// ----------------------------------------------------------------------------

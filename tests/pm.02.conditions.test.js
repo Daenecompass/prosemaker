@@ -54,13 +54,51 @@ test('PM conditions: always and never', function (t) {
   ])
 })
 // ----------------------------------------------------------------------------
-test.skip('PM conditions: unrecognised', function (t) {
+test('PM conditions: unrecognised', function (t) {
   proseTest(t, {}, [
     '[[unrecognised]]|[[unrecognised]]|unrecognised condition stays in',
     '[[  unrecognised ]]text|[[  unrecognised ]]text|unrecognised condition keeps whitespace',
     '[[unrecognised]]text|[[unrecognised]]text|unrecognised condition acts as true',
     '[[dt s sadf sdc  ]]text|[[dt s sadf sdc  ]]text|unrecognised condition is preserved',
     '[[1. Dt S sadf sdc  ]]text|[[1. Dt S sadf sdc  ]]text|unrecognised condition keeps caps etc'
+  ])
+})
+// ----------------------------------------------------------------------------
+test('PM conditions: numeric comparator conditions', function (t) {
+  proseTest(t, {}, [
+    '[[1 == 1]]True|True| testing that 1 == 1 is true',
+    '[[1 == 2]]False||testing that 1 == 2 is false',
+    '[[1 != 2]]True|True|testing that 1 != 2 is true',
+    '[[1 != 1]]False||testing that 1 != 1 is false',
+    '[[1 < 2]]True|True|testing that 1 < 2 is true',
+    '[[2 < 1]]False||testing that 2 < 1 is false',
+    '[[1 < 1]]False||testing that 1 < 1 is false',
+    '[[1 <= 2]]True|True|testing that 1 <= 2 is true',
+    '[[2 <= 1]]False||testing that 2 <= 1 is false',
+    '[[1 <= 1]]True|True|testing that 1 <= 1 is true',
+    '[[2 > 1]]True|True| testing that 2 > 1 is true',
+    '[[1 > 2]]False|| testing that 1 > 2 is false',
+    '[[1 > 1]]False|| testing that 2 > 2 is false',
+    '[[2 >= 1]]True|True|testing that 2 >= 1 is true',
+    '[[1 >= 2]]False||testing that 1 >= 2 is false',
+    '[[1 >= 1]]True|True|testing that 1 >= 1 is true',
+    '[[1 >=! 1]]Unrecognised|[[1 >=! 1]]Unrecognised|testing that unrecognised comparators are returned as is'
+  ])
+})
+// ----------------------------------------------------------------------------
+test('PM conditions: character comparator conditions', function (t) {
+  proseTest(t, {}, [
+    '[[abc == abc]]True|True|testing that abc == abc is true',
+    '[[abc != abc]]False||testing that abc != abc is false'
+  ])
+})
+// ----------------------------------------------------------------------------
+test.skip('PM conditions: variable comparator conditions', function (t) {
+  proseTest(t, {
+    abc: 'one'
+  }, [
+    '[[abc == one]]True|True|testing that abc == one is true',
+    '[[abc != abc]]False||testing that abc != abc is false'
   ])
 })
 // ----------------------------------------------------------------------------

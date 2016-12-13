@@ -1,5 +1,6 @@
 {
   var replaceableResolver = require('./resolvers/replaceable')
+  var lookupComparator = require('./resolvers/comparators')
 }
 
 prosemakerDoc
@@ -12,8 +13,16 @@ firstDocSection
 
 docSection
   = c:conditionExpression t:contentChunk*
-      { if (c) { return t.join('') }}
-//      else { return c.join('') + t.join('') }
+      {
+        // c is a string if it is an unrecognised condition
+        if (typeof c === 'string') {
+          return '[[' + c + ']]' + t.join('')
+        } else if (c) {
+          return t.join('')
+        } else {
+          // if c is false text is not included in output
+        }
+      }
 
 contentChunk
   = r:replaceableExpression
@@ -32,8 +41,13 @@ conditionExpression
       { return c }
 
 condition
-  = a: absoluteCondition
+  = a:absoluteCondition
       { return a }
+  / cc:comparisonCondition
+      { return cc }
+//  / r:rangeCondition
+  / u:unrecognisedCondition
+      {return u }
 
 absoluteCondition
   = a:alwaysCondition
@@ -48,6 +62,19 @@ alwaysCondition
 neverCondition
   = optWS word:'never'i optWS
       { return false }
+
+comparisonCondition
+  = optWS left:word optWS cp:comparator optWS right:word optWS
+      { if (lookupComparator[cp] !== undefined) {
+        return lookupComparator[cp](left, right)
+        } else {
+          return text()
+        }
+      }
+
+unrecognisedCondition
+  = p:plainText
+    { return p }
 
 // replaceables -------------------------------------------
 
@@ -64,8 +91,12 @@ transform
       { return { name:n, parameters:p} }
 
 replaceableValue
-  = w:word
-      { return w }
+  = c:valueChunk*
+      { return c.join('') } // todo
+
+valueChunk
+  = w:word { return w }
+  / r:replaceableExpression { return r }
 
 transformName
   = w:word
@@ -74,7 +105,7 @@ transformName
 parameter
   = optWS i:integer
       { return i }
-    / optWS w:word
+  / optWS w:word
       { return w }
 
 // whitespace ---------------------------------------------
@@ -93,8 +124,9 @@ optWS
 
 // comparators --------------------------------------------
 
-//greaterThanOne
-//  = left:integer > 1 { return true }
+comparator
+  = chars:[=<>!]+
+      { return chars.join('') }
 
 // arithmatic ---------------------------------------------
 
