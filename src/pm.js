@@ -1,15 +1,11 @@
 
 'use strict'
 
-let parser = require('../dist/pm-parse')
+let parser = require('../dist/pm-parse-trace')
 let replaceableResolver = require('./resolvers/replaceable')
 
 class PM {
-  constructor () {
-    this.data = {}
-    this.ast = {}
-    this.version = 'beta'
-  }
+
   // ------------------------------------------------------
   prose (inputDoc, data) {
     let result = []

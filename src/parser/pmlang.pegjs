@@ -47,16 +47,23 @@ conditionExpression
       { return c }
 
 condition
-  = a: absoluteCondition
+  = a:absoluteCondition
       { return {
         type: 'condition',
         content: a
       }}
+  / c:comparisonCondition
+      { return {
+        type: 'condition',
+        content: c
+      }}
+  / u:unrecognisedCondition { return u }
+
+// --- absolute condition ---
 
 absoluteCondition
   = a:alwaysCondition { return a }
   / n:neverCondition { return n }
-  / u:unrecognisedCondition { return u }
 
 alwaysCondition
   = optWS [Aa][Ll][Ww][Aa][Yy][Ss] optWS { return {
@@ -67,6 +74,34 @@ neverCondition
   = optWS [Nn][Ee][Vv][Ee][Rr] optWS { return {
     type: 'never'
   }}
+
+// --- comparison condition ---
+
+comparisonCondition
+  = c: simpleComparison { return { c }}
+
+simpleComparison
+  = optWS l:arg optWS c:comparator optWS r:arg optWS
+    { return {
+      type: 'comparison',
+      left: l,
+      right: r,
+      comparator: c
+    }}
+
+// todo more comparators
+comparator
+  = "=="
+
+arg
+  = literalNumber
+
+// todo accept floats
+// todo move to a better spot
+literalNumber
+  = d:digits { return parseInt(d, 10) }
+
+// --- unrecognised condition ---
 
 unrecognisedCondition
   = p:plainText { return {
@@ -120,6 +155,10 @@ optWS = ws:WS?
       } }
 
 // text (this gets tedious) -------------------------------
+
+digits
+  = digits:[0-9]+
+    { return digits.join('') }
 
 plainText
   = chars:[a-zA-Z 0-9\n\t\.]+

@@ -2,28 +2,21 @@
 
 import test from 'tape'
 import pm from '../index'
-// ----------------------------------------------------------------------------
-// convenience function that takes an array of strings, splits each one
-// on pipes tp extract "input|expected-result|optional-test-message", and
-// optionally data to use when prose-ing.
-function proseTest (t, data = {}, testList = []) {
-  testList.forEach((tester) => {
-    const [doc, result, comment] = tester.split('|')
-    t.equal(pm.prose(doc, data), result, comment)
-  })
-  t.end()
-}
+import utils from './testutils'
+
+let proseTest = utils.proseTest
+
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 test('PM conditions: plain text', function (t) {
-  proseTest(t, {}, [
+  proseTest(pm, t, {}, [
     '||blank stays blank',
     'text|text|plain text is included'
   ])
 })
 // ----------------------------------------------------------------------------
 test('PM conditions: always', function (t) {
-  proseTest(t, {}, [
+  proseTest(pm, t, {}, [
     '[[always]]||always blank stays blank',
     '[[always]]text|text|always includes text',
     '[[ always]]text|text|always space left padding',
@@ -34,7 +27,7 @@ test('PM conditions: always', function (t) {
 })
 // ----------------------------------------------------------------------------
 test('PM conditions: never', function (t) {
-  proseTest(t, {}, [
+  proseTest(pm, t, {}, [
     '[[never]]||never blank stays blank',
     '[[never]]text||never text stays blank',
     '[[ never]]text||never space left padding',
@@ -45,7 +38,7 @@ test('PM conditions: never', function (t) {
 })
 // ----------------------------------------------------------------------------
 test('PM conditions: always and never', function (t) {
-  proseTest(t, {}, [
+  proseTest(pm, t, {}, [
     'showing[[never]]hiding|showing|default always > never',
     '[[never]]hiding[[always]]showing[[never]]hiding|showing|never > always > never',
     '[[never]][[always]]showing|showing|never blank > always',
@@ -55,7 +48,7 @@ test('PM conditions: always and never', function (t) {
 })
 // ----------------------------------------------------------------------------
 test('PM conditions: unrecognised', function (t) {
-  proseTest(t, {}, [
+  proseTest(pm, t, {}, [
     '[[unrecognised]]|[[unrecognised]]|unrecognised condition stays in',
     '[[  unrecognised ]]text|[[  unrecognised ]]text|unrecognised condition keeps whitespace',
     '[[unrecognised]]text|[[unrecognised]]text|unrecognised condition acts as true',
