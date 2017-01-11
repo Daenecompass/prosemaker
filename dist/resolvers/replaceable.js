@@ -19,12 +19,19 @@ function resolveReplaceable(replaceable) {
     }
   }
 
-  var value = replaceable.value;
+  var value = '';
+
+  if (replaceable.varName !== undefined) {
+    value = replaceable.varName;
+    if (data[value] !== undefined) {
+      value = data[value];
+    }
+  } else {
+    value = replaceable.literalValue;
+  }
+
   var tfParams = [];
 
-  if (data[value] !== undefined) {
-    value = data[value];
-  }
   // - - - - - - - - - - - - - - - - - - - - -
   // now do transforms
   replaceable.transforms.forEach(function (tf) {

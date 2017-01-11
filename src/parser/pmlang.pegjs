@@ -46,8 +46,8 @@ condition
   / cc:comparisonCondition
       { return cc }
 //  / r:rangeCondition
-  / u:unrecognisedCondition
-      {return u }
+//  / u:unrecognisedCondition
+//      {return u }
 
 absoluteCondition
   = a:alwaysCondition
@@ -64,17 +64,27 @@ neverCondition
       { return false }
 
 comparisonCondition
-  = optWS left:word optWS cp:comparator optWS right:word optWS
+  = optWS left:conditionTerm optWS cp:comparator optWS right:conditionTerm optWS
       { if (lookupComparator[cp] !== undefined) {
-        return lookupComparator[cp](left, right)
+          console.log(left, right)
+          console.log(typeof left, typeof right)
+          if (typeof left === typeof right) {
+            return lookupComparator[cp](left, right)
+          } else {
+            return lookupComparator[cp](left.toString(), right.toString())
+          }
         } else {
           return text()
         }
       }
 
-unrecognisedCondition
-  = p:plainText
-    { return p }
+// unrecognisedCondition
+//   = p:plainText
+//     { return p }
+
+conditionTerm
+  =  r:replaceableValue
+      { return replaceableResolver( r, options.data) }
 
 // replaceables -------------------------------------------
 
@@ -83,16 +93,29 @@ replaceableExpression
       { return replaceableResolver(r, options.data) }
 
 replaceable
-  = v:replaceableValue t:transform*
-      { return { value:v, transforms:t } }
+  = r:replaceableValue t:transform*
+      { r.transforms = t
+        return r }
+
+replaceableValue
+  = v:varName
+      { return { varName:v, transforms:[] } }
+  / ls:literalString
+      { return { literalValue:ls, transforms:[] } }
+  / n:number
+      { return { literalValue:i, transforms:[] } }
 
 transform
   = optWS ',' optWS n:transformName p:parameter*
       { return { name:n, parameters:p} }
 
-replaceableValue
-  = c:valueChunk*
-      { return c.join('') } // todo
+varName
+  = c:valueChunk+
+      { return c.join('') }
+
+literalString
+  = "'" sqS:sqString "'" { return sqS }
+  / '"' dqS:dqString '"' { return dqS }
 
 valueChunk
   = w:word { return w }
@@ -103,10 +126,18 @@ transformName
       { return w }
 
 parameter
-  = optWS i:integer
-      { return i }
+  = optWS n:number
+      { return n }
   / optWS w:word
       { return w }
+
+sqString
+  = p:sqPlainText
+      { return p }
+
+dqString
+  = p:dqPlainText
+      { return p }
 
 // whitespace ---------------------------------------------
 
@@ -130,16 +161,24 @@ comparator
 
 // arithmatic ---------------------------------------------
 
-integer 'integer'
+number
   = chars:[0-9.]+
       { return parseFloat(chars.join(''), 10); }
 
 // text (this gets tedious) -------------------------------
 
 plainText
-  = chars:[a-zA-Z0-9 \n\r\t.,()-><]+
+  = chars:[a-zA-Z0-9 \n\r\t.,()-><!_]+
       { return chars.join('') }
 
 word
   = chars:[a-zA-Z0-9\._]+
+      { return chars.join('') }
+
+sqPlainText
+  = chars:[a-zA-Z0-9 \n\r\t.,()-><!_""]+
+      { return chars.join('') }
+
+dqPlainText
+  = chars:[a-zA-Z0-9 \n\r\t.,()-><!_'']+
       { return chars.join('') }

@@ -54,7 +54,7 @@ test('PM conditions: always and never', function (t) {
   ])
 })
 // ----------------------------------------------------------------------------
-test('PM conditions: unrecognised', function (t) {
+test.skip('PM conditions: unrecognised', function (t) {
   proseTest(t, {}, [
     '[[unrecognised]]|[[unrecognised]]|unrecognised condition stays in',
     '[[  unrecognised ]]text|[[  unrecognised ]]text|unrecognised condition keeps whitespace',
@@ -93,12 +93,17 @@ test('PM conditions: character comparator conditions', function (t) {
   ])
 })
 // ----------------------------------------------------------------------------
-test.skip('PM conditions: variable comparator conditions', function (t) {
+test('PM conditions: variable comparator conditions', function (t) {
   proseTest(t, {
-    abc: 'one'
+    abc: 1,
+    string: 'AString',
+    one: 1,
+    oneString: '1'
   }, [
-    '[[abc == one]]True|True|testing that abc == one is true',
-    '[[abc != abc]]False||testing that abc != abc is false'
+    // '[[abc == 1]]True|True|testing that abc == 1 is true',
+    '[[abc != abc]]False||testing that abc != abc is false',
+    '[[string == AString]]True|True|string == string',
+    '[[one == oneString]]True|True|int == str(int)'
   ])
 })
 // ----------------------------------------------------------------------------

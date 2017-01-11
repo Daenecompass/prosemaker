@@ -9,3 +9,12 @@ Round test: 5.3 -> {{rndfivepointthree, round}}, 5.5 -> {{rndfivepointfive, roun
 
 Pluralisation:
 {{oxen_count1, plural ox oxen}}, {{oxen_count10, plural ox oxen}}. {{geese_count1, plural goose geese}}, {{geese_count2, plural goose geese}}. {{zombie_count, plural zombie zombies}}.
+
+[[rndfourpointfive == 4.5]]Works!
+[[oxen_count1 == geese_count1]]1 === 1
+[[two == geese_count2]]2 === 2
+[[weekday3 == Tuesday]]Tuesday === Tuesday
+[[onepointzerozero == one]]1.00 === 1
+
+[[always]]
+{{5}}

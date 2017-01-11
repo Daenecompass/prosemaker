@@ -114,7 +114,7 @@ test('PM replaceables: add transforms', function (t) {
     '{{five, add c 3}}|8|testing add transform handles character and number parameters',
     '{{five, add 5}}|10|testing add transform works',
     '{{five, add 5 5}}|15|testing add transform works with multiple parameters'
-    // '{{five, add 5 five}}|10|testing add transform handles non-numeric parameters'
+  // '{{five, add 5 five}}|10|testing add transform handles non-numeric parameters'
   ])
 })
 // ----------------------------------------------------------------------------
@@ -236,6 +236,27 @@ test('PM replaceables: multiple round substitutions', function (t) {
   }, [
     '{{alarm_{{daytypeTestOne}}_time}}|6am|testing parser completes multiple round substitutions',
     '{{alarm_{{daytypeTestTwo}}_time}}|9am|testing parser completes multiple round substitutions (comparison data)'
+    // '{{alarm_{{daytypeTestTwo}}_time}}|9am|testing parser completes multiple round substitutions with nested substitutions'
+  ])
+})
+// ----------------------------------------------------------------------------
+test('PM replaceables: parsing literals', function (t) {
+  proseTest(t, {
+  }, [
+    "{{'5'}}|5|testing parser handles single quote numeric literals",
+    "{{'  5 '  }}|  5 |testing parser handles single quote numeric literals with whitespaces",
+    "{{'five'}}|five|testing parser handles single quote string literals",
+    "{{'fIve'}}|fIve|testing parser handles single quote string literals with caps",
+    "{{' fIv e  '}}| fIv e  |testing parser handles single quote string literals with caps and whitespaces",
+    "[['5' == 5]]True|True|testing parser can compare single quote numeric literals",
+    "[['five' == five]]True|True|testing parser can compare single quote string literals",
+    '{{"5"}}|5|testing parser handles double quote numeric literals',
+    '{{"five"}}|five|testing parser handles double quote string literals',
+    '[["5" == 5]]True|True|testing parser can compare double quote numeric literals',
+    '[["five" == five]]True|True|testing parser can compare double quote string literals',
+    '[[\'five\' == "five"]]True|True|testing parser can compare single and double quote string literals',
+    '{{"\'string\'"}}|\'string\'|testing parser handles string literals with opposite quotes inside',
+    "{{'\"string\"'}}|\"string\"|testing parser handles string literals with opposite quotes inside"
   ])
 })
 // ----------------------------------------------------------------------------

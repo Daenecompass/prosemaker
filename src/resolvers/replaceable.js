@@ -16,12 +16,19 @@ function resolveReplaceable (replaceable, data = {}) {
     }
   }
 
-  let value = replaceable.value
+  let value = ''
+
+  if (replaceable.varName !== undefined) {
+    value = replaceable.varName
+    if (data[value] !== undefined) {
+      value = data[value]
+    }
+  } else {
+    value = replaceable.literalValue
+  }
+
   let tfParams = []
 
-  if (data[value] !== undefined) {
-    value = data[value]
-  }
   // - - - - - - - - - - - - - - - - - - - - -
   // now do transforms
   replaceable.transforms.forEach((tf) => {
