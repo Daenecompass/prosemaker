@@ -4,9 +4,9 @@ import shlex
 import simplejson # can't use native json because we have to json-ify Decimals
 from decimal import *
 
-from docpart import DocPart
-from conditionparser import ConditionParser
-from replacementparser import ReplacementParser
+from dwb.prosemaker.docpart import DocPart
+from dwb.prosemaker.conditionparser import ConditionParser
+from dwb.prosemaker.replacementparser import ReplacementParser
 
 class ProseMaker(object):
 

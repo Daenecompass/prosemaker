@@ -18,13 +18,15 @@ class ReplacementVisitor(NodeVisitor):
             return node.text.strip()
 
     # proper node handlers ------------------------------------------
-    def visit_replacement(self, node, (ws1, replacevalue, translist, ws2)):
+    def visit_replacement(self, node, children):
+        ws1, replacevalue, translist, ws2 = children
         return [replacevalue, translist]
 
     def visit_transformationlist(self, node, translist):
         return translist
 
-    def visit_transformation(self, node, (ws1, comma, ws2, transname, transarglist)):
+    def visit_transformation(self, node, children):
+        ws1, comma, ws2, transname, transarglist = children
         return [transname, transarglist]
 
     def visit_transarglist(self, node, children):
@@ -36,7 +38,8 @@ class ReplacementVisitor(NodeVisitor):
 
         raise Exception('variable name "' + node.text + '" was not found.')
 
-    def visit_expression(self, node, (left, ws1, operator, ws2, right)):
+    def visit_expression(self, node, children):
+        left, ws1, operator, ws2, right = children
 
         if not isinstance(left, Decimal):
             left = Decimal(repr(left))
@@ -61,13 +64,16 @@ class ReplacementVisitor(NodeVisitor):
     def visit_numberliteral(self, node, children):
         return Decimal(node.text.strip())
 
-    def visit_doublequotedstr(self, node, (ws, q1, arg, q2)):
+    def visit_doublequotedstr(self, node, children):
+        ws, q1, arg, q2 = children
         return arg
 
-    def visit_singlequotedstr(self, node, (ws, q1, arg, q2)):
+    def visit_singlequotedstr(self, node, children):
+        ws, q1, arg, q2 = children
         return arg
 
-    def visit_unquotedarg(self, node, (ws, arg)):
+    def visit_unquotedarg(self, node, children):
+        ws, arg = children
         return arg
 
 # ===================================================================

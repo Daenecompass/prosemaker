@@ -36,11 +36,14 @@ class ConditionVisitor(NodeVisitor):
 
     # proper node handlers ------------------------------------------
 
-    def visit_condition(self, node, (ws1, disjunction, ws2)):
+    def visit_condition(self, node, children):
+        ws1, disjunction, ws2 = children
+
         return disjunction
 
 
-    def visit_disjunction(self, node, (firstterm, otherterms)):
+    def visit_disjunction(self, node, children):
+        firstterm, otherterms = children
         terms = [firstterm]
         if len(otherterms) > 0:
             terms.extend(otherterms)
@@ -51,11 +54,13 @@ class ConditionVisitor(NodeVisitor):
         return terms
 
 
-    def visit_orconjunction(self, node, (ws1, operator, ws2, conjunction)):
+    def visit_orconjunction(self, node, children):
+        ws1, operator, ws2, conjunction = children
         return conjunction
 
 
-    def visit_conjunction(self, node, (firstterm, otherterms)):
+    def visit_conjunction(self, node, children):
+        firstterm, otherterms = children
         terms = [firstterm]
         if len(otherterms) > 0:
             terms.extend(otherterms)
@@ -66,7 +71,8 @@ class ConditionVisitor(NodeVisitor):
         return terms
 
 
-    def visit_andcondition(self, node, (ws1, operator, ws2, simplecondition)):
+    def visit_andcondition(self, node, children):
+        ws1, operator, ws2, simplecondition = children
         return simplecondition
 
 
@@ -114,7 +120,8 @@ class ConditionVisitor(NodeVisitor):
         return children[0]
 
 
-    def visit_simple_comparison(self, node, (left, ws1, comp, ws2, right)):
+    def visit_simple_comparison(self, node, children):
+        left, ws1, comp, ws2, right = children
         if comp ==      '==':
             return (left == right)
 
@@ -136,7 +143,8 @@ class ConditionVisitor(NodeVisitor):
         raise Exception('comparison "' + comp + '" is not implemented')
 
 
-    def visit_range_muchlessthan_comparison(self, node, (left, ws1, pre, range, post, ws2, right)):
+    def visit_range_muchlessthan_comparison(self, node, children):
+        left, ws1, pre, range, post, ws2, right = children
         if isinstance(range, Percentage):
             range = right * range / Decimal(100)
 
@@ -144,7 +152,8 @@ class ConditionVisitor(NodeVisitor):
         return (left < left_max)
 
 
-    def visit_range_leftrocket_comparison(self, node, (left, ws1, pre, range, post, ws2, right)):
+    def visit_range_leftrocket_comparison(self, node, children):
+        left, ws1, pre, range, post, ws2, right = children
         if isinstance(range, Percentage):
             range = right * range / Decimal(100)
 
@@ -153,7 +162,8 @@ class ConditionVisitor(NodeVisitor):
         return (left_min <= left < left_max)
 
 
-    def visit_range_eq_comparison(self, node, (left, ws1, pre, range, post, ws2, right)):
+    def visit_range_eq_comparison(self, node, children):
+        left, ws1, pre, range, post, ws2, right = children
         if isinstance(range, Percentage):
             range = right * range / Decimal(100)
 
@@ -162,7 +172,8 @@ class ConditionVisitor(NodeVisitor):
         return (left_min <= left <= left_max)
 
 
-    def visit_range_neq_comparison(self, node, (left, ws1, pre, range, post, ws2, right)):
+    def visit_range_neq_comparison(self, node, children):
+        left, ws1, pre, range, post, ws2, right = children
         if isinstance(range, Percentage):
             range = right * range / Decimal(100)
 
@@ -171,7 +182,8 @@ class ConditionVisitor(NodeVisitor):
         return not(left_min <= left <= left_max)
 
 
-    def visit_range_rightrocket_comparison(self, node, (left, ws1, pre, range, post, ws2, right)):
+    def visit_range_rightrocket_comparison(self, node, children):
+        left, ws1, pre, range, post, ws2, right = children
         if isinstance(range, Percentage):
             range = right * range / Decimal(100)
 
@@ -180,7 +192,8 @@ class ConditionVisitor(NodeVisitor):
         return (left_min < left <= left_max)
 
 
-    def visit_range_muchgreaterthan_comparison(self, node, (left, ws1, pre, range, post, ws2, right)):
+    def visit_range_muchgreaterthan_comparison(self, node, children):
+        left, ws1, pre, range, post, ws2, right = children
         if isinstance(range, Percentage):
             range = right * range / Decimal(100)
 
@@ -188,11 +201,13 @@ class ConditionVisitor(NodeVisitor):
         return (left > left_min)
 
 
-    def visit_simple_comparator(self, node, (cmp)):
+    def visit_simple_comparator(self, node, children):
+        cmp = children
         return cmp[0]
 
 
-    def visit_expression(self, node, (left, ws1, operator, ws2, right)):
+    def visit_expression(self, node, children):
+        left, ws1, operator, ws2, right = children
 
         if not isinstance(left, Decimal):
             left = Decimal(repr(left))
