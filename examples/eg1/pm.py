@@ -92,4 +92,5 @@ pm.data = json_data
 pm.source = template_string
 
 # print the output
-print(pm.doc)
+with open(args.result, "w") as resultfile:
+	resultfile.write(pm.doc)
